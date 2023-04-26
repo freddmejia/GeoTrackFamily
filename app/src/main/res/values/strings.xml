@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">GeoTrackFamily</string>
+    <string name="track_family">Track family</string>
+    <string name="login">Ingresar</string>
+    <string name="register">Registrarme</string>
+    <string name="title_continue">Continuar</string>
+    <string name="forgot_password">Olvide mi contraseña</string>
+    <string name="login_email">Escribe correo electronico</string>
+    <string name="login_password">Escribe contraseña</string>
+    <string name="login_repeat_password">Repite la contraseña</string>
+    <string name="register_name">Escribe nombre y apellido</string>
+    <string name="dont_have_friends">Aun no tienes amigos agrega uno</string>
+    <string name="menu_home">Home</string>
+    <string name="find_friend_by_name">Busca a tu amigo por nombre</string>
+    <string name="my_friends">Mis amigos</string>
+    <string name="see_friend">Ver amigo</string>
+    <string name="dont_have_friends_location">No puedes ver la ubicacion de tu amigo, agrega uno</string>
+    <string name="zone_dangerous">Zonas riesgo</string>
+    <string name="zone_dangerous_location">No puedes definir zonas de riesgo para tu amigo, agrega uno</string>
+
+</resources>

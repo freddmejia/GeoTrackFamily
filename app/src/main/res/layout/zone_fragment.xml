@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <include layout="@layout/onboarding_toolbar"/>
+
+            <RelativeLayout
+                android:id="@+id/rlMyFriends"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginHorizontal="15sp">
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cvFindFriends"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="10sp"
+                        android:layout_marginBottom="20sp"
+                        app:strokeWidth="1sp"
+                        app:strokeColor="@color/gray_7c"
+                        android:layout_marginHorizontal="25sp"
+                        android:layout_marginTop="25sp"
+                        >
+                        <EditText
+                            android:id="@+id/etUsername"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="text"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/find_friend_by_name"
+                            android:padding="10sp"
+                            android:layout_marginHorizontal="5sp"/>
+                    </com.google.android.material.card.MaterialCardView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvMyFriends"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginHorizontal="15sp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/zone_placeholder"
+                        android:layout_marginTop="25sp"
+                        android:layout_marginBottom="35sp"
+                        android:visibility="visible"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/zone_dangerous_location"
+                        style="@style/normal_medium"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="20sp"
+                        />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>

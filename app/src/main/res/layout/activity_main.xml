@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <include layout="@layout/onboarding_toolbar"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginHorizontal="15sp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/onboarding"
+                        android:layout_marginTop="25sp"
+                        android:layout_marginBottom="35sp"
+                        />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cvLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/blue_7d"
+                        android:layout_marginHorizontal="15sp"
+                        app:cardCornerRadius="10sp"
+                        android:layout_marginBottom="15sp"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/login"
+                            style="@style/bold_large"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:paddingVertical="7sp"/>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cvRegister"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/green_a7"
+                        android:layout_marginHorizontal="15sp"
+                        app:cardCornerRadius="10sp"
+                        android:layout_marginBottom="35sp"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/register"
+                            style="@style/bold_large"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:paddingVertical="7sp"/>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:id="@+id/tvForgetPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10sp"
+                        android:text="@string/forgot_password"
+                        style="@style/bold_medium"
+                        android:textColor="@color/gray_5a"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:gravity="center"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="normal_large" parent="@style/TextAppearance.AppCompat.Large">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="bold_large" parent="@style/TextAppearance.AppCompat.Large">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="normal_medium" parent="@style/TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="bold_medium" parent="@style/TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="normal_small" parent="@style/TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="bold_small" parent="@style/TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="bold_large." parent="@style/TextAppearance.AppCompat.Large">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="bold_medium." parent="@style/TextAppearance.AppCompat.Medium">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="bold_small." parent="@style/TextAppearance.AppCompat.Small">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>
