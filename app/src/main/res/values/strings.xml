@@ -18,4 +18,11 @@
     <string name="zone_dangerous">Zonas riesgo</string>
     <string name="zone_dangerous_location">No puedes definir zonas de riesgo para tu amigo, agrega uno</string>
 
+
+    <string name="shared_preferences">geo.track_family.ecu</string>
+
+
+    <!-- errors -->
+    <string name="error_fill">LLena todos los campos</string>
+
 </resources>

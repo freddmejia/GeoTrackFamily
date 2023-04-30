@@ -8,13 +8,22 @@ import com.example.geotrackfamily.repository.FriendRepository
 import com.example.geotrackfamily.repository.UserRepository
 import com.example.geotrackfamily.utility.Utils
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
-
+@Module
+@InstallIn(SingletonComponent::class)
 object AppModule {
+
+
+    @Provides
+    fun provideGson(): Gson = GsonBuilder().create()
 
     @Singleton
     @Provides
@@ -37,18 +46,18 @@ object AppModule {
     fun provideUserRepository(userDataSourceRemote: UserRemoteDataSource) = UserRepository(userDataSourceRemote)
 
     ///////
-    @Provides
+ /*   @Provides
     fun provideFriendService(@Named("api") retrofit: Retrofit): FriendServiceRemote = retrofit.create(FriendServiceRemote::class.java)
 
     @Singleton
     @Provides
-    fun provideUserRemoteDataSource(friendServiceRemote: FriendServiceRemote) = FriendRemoteDataSource(friendServiceRemote)
+    fun provideFriendRemoteDataSource(friendServiceRemote: FriendServiceRemote) = FriendRemoteDataSource(friendServiceRemote)
 
     @Singleton
     @Provides
-    fun provideUserRepository(friendRemoteDataSource: FriendRemoteDataSource) = FriendRepository(friendRemoteDataSource)
+    fun provideFriendRepositoru(friendRemoteDataSource: FriendRemoteDataSource) = FriendRepository(friendRemoteDataSource)
 
-
+*/
 
 
 }

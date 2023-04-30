@@ -1,9 +1,12 @@
 package com.example.geotrackfamily.utility
 
+import okhttp3.ResponseBody
+import org.json.JSONObject
+
 class Utils {
     companion object{
         const val api_version = "/api"
-        const val domainApi = "http://192.168.1.249:8000/"
+        const val domainApi = "http://192.168.1.16:8000/"
 
         //user
         const val login = "$api_version/login"
@@ -26,5 +29,15 @@ class Utils {
         const val update_geofence_friend = "$api_version/update_geofence_friend"
         const val fetch_geofence_byfriend = "$api_version/fetch_geofence_byfriend"
         const val delete_geofence_byfriend = "$api_version/delete_geofence_byfriend"
+
+        fun <T> errorResult(message: String,errorBody: ResponseBody? = null): Result<T> {
+            //Timber.d(message)
+            var mess_d = message
+            if (errorBody != null) {
+                val json = JSONObject(errorBody?.string())
+                mess_d = json.getString("message")
+            }
+            return Result.Error(mess_d)
+        }
     }
 }

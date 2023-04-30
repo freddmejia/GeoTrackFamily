@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
     <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -34,12 +35,13 @@
                     android:src="@drawable/at_icon"
                     android:layout_marginRight="10sp"/>
                 <EditText
-                    android:id="@+id/etUsername"
+                    android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="text"
                     android:background="@android:color/transparent"
-                    android:hint="@string/login_email"/>
+                    android:hint="@string/login_email"
+                    android:text="freakjshdjsak1@gmail.com" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
@@ -70,7 +72,8 @@
                     android:layout_height="match_parent"
                     android:inputType="textPassword"
                     android:background="@android:color/transparent"
-                    android:hint="@string/login_password"/>
+                    android:hint="@string/login_password"
+                    android:text="1212"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
@@ -93,4 +96,10 @@
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 </RelativeLayout>
