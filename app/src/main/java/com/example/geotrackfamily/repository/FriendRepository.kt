@@ -1,5 +1,6 @@
 package com.example.geotrackfamily.repository
 
+import android.util.Log
 import com.example.geotrackfamily.datasources.FriendRemoteDataSource
 import com.example.geotrackfamily.datasources.UserRemoteDataSource
 import com.example.geotrackfamily.models.Friend
@@ -26,6 +27,45 @@ class FriendRepository @Inject constructor(
                 val body = response.body()
                 if (body != null) {
                     val ab = CompositionObj(response.body()!!.poss_friends, response.body()!!.message)
+                    Result.Success(ab)
+                }
+                else{
+                    //val errorBody = (response.errorBody() as HttpException).response()?.errorBody()?.string()
+                    Utils.errorResult( message = "",errorBody = response.errorBody()!!)
+                }
+            }catch (e: Exception){
+                Utils.errorResult(message = e.message ?: e.toString())
+            }
+        }
+    }
+
+
+    suspend fun fetch_friends_request(): Result<CompositionObj<ArrayList<Friend>, String>> {
+        return withContext(Dispatchers.Default){
+            try {
+                val response = friendRemoteDataSource.fetchFriendsRequest()
+                val body = response.body()
+                if (body != null) {
+                    val ab = CompositionObj(response.body()!!.friends_requests, response.body()!!.message)
+                    Result.Success(ab)
+                }
+                else{
+                    //val errorBody = (response.errorBody() as HttpException).response()?.errorBody()?.string()
+                    Utils.errorResult( message = "",errorBody = response.errorBody()!!)
+                }
+            }catch (e: Exception){
+                Utils.errorResult(message = e.message ?: e.toString())
+            }
+        }
+    }
+
+    suspend fun fetch_friends(): Result<CompositionObj<ArrayList<Friend>, String>> {
+        return withContext(Dispatchers.Default){
+            try {
+                val response = friendRemoteDataSource.fetchFriends()
+                val body = response.body()
+                if (body != null) {
+                    val ab = CompositionObj(response.body()!!.friends, response.body()!!.message)
                     Result.Success(ab)
                 }
                 else{
@@ -66,7 +106,7 @@ class FriendRepository @Inject constructor(
                 val requestBody: MutableMap<String, String> = HashMap()
                 requestBody["user_id1"] = user_id1
                 requestBody["user_id2"] = user_id2
-                val response = friendRemoteDataSource.friendRequest(requestBody = requestBody)
+                val response = friendRemoteDataSource.acceptFriendRequest(requestBody = requestBody)
                 val body = response.body()
                 if (body != null) {
                     val ab = CompositionObj(response.body()!!.friend_request, response.body()!!.message)

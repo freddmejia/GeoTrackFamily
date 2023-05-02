@@ -7,7 +7,9 @@ class FriendRemoteDataSource @Inject constructor(
     private val friendService: FriendServiceRemote
 ) {
     suspend fun fetchPossibleFriends(requestBody: MutableMap<String, String>) = friendService.fetchPossibleFriends(requestBody)
-    suspend fun fetchFriends(requestBody: MutableMap<String, String>) = friendService.fetchFriends(requestBody)
+    suspend fun fetchFriendsRequest() = friendService.fetchFriendsRequest()
+
+    suspend fun fetchFriends() = friendService.fetchFriends()
     suspend fun friendRequest(requestBody: MutableMap<String, String>) = friendService.friendRequest(requestBody)
     suspend fun acceptFriendRequest(requestBody: MutableMap<String, String>) = friendService.acceptFriendRequest(requestBody)
     suspend fun deleteFriendRequest(requestBody: MutableMap<String, String>) = friendService.deleteFriendRequest(requestBody)

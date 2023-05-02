@@ -22,6 +22,8 @@ class Utils {
         //friends
         const val fetch_possible_friends = "$api_version/fetch_possible_friends"
         const val fetch_friends = "$api_version/fetch_friends"
+        const val fetch_friends_request = "$api_version/fetch_friends_request"
+
         const val friend_request = "$api_version/friend_request"
         const val accept_friend_request = "$api_version/accept_friend_request"
         const val delete_friend_request = "$api_version/delete_friend_request"

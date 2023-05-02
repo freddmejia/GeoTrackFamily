@@ -93,7 +93,7 @@ class FindFriendActivity : AppCompatActivity(), UIObserverGeneric<Friend> {
 
         lifecycleScope.launchWhenCreated {
             friendViewModel.loadingProgress.collect {
-                binding.linear.isVisible = !it
+                binding.rvFriends.isVisible = !it
                 binding.progressBar.isVisible = it
             }
         }

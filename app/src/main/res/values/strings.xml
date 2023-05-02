@@ -21,9 +21,11 @@
     <string name="find_friend_by_name_email">Escribe el nombre o e-mail</string>
     <string name="add_friend">Agregar</string>
     <string name="shared_preferences">geo.track_family.ecu</string>
-
-
+    <string name="title_add_friend">Agrega un amigo</string>
+    <string name="have_friends_request"> <u>Tienes solicitudes de amigos pendientes</u> </string>
+    <string name="cancel">cancelar</string>
     <!-- errors -->
     <string name="error_fill">LLena todos los campos</string>
-
+    <string name="error_no_data">No hay datos</string>
+    <string name="error_data">Hay datos</string>
 </resources>

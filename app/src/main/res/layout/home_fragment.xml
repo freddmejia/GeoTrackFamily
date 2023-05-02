@@ -3,15 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
         <LinearLayout
+            android:id="@+id/linear"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/haveFriends"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/have_friends_request"
+                style="@style/bold_medium"
+                android:layout_gravity="center"
+                android:layout_marginTop="20sp"
+                android:textColor="@color/blue_7d"
+                android:layout_marginHorizontal="20sp"
+                android:visibility="gone"
+                android:clickable="true"
+                android:focusable="true"
+
+                />
 
             <RelativeLayout
                 android:id="@+id/rlMyFriends"
@@ -52,6 +69,7 @@
                     android:layout_marginHorizontal="15sp">
 
                     <ImageView
+                        android:id="@+id/placeholder"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/friends_placeholder"
@@ -64,6 +82,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <TextView
+                            android:id="@+id/title"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="4"

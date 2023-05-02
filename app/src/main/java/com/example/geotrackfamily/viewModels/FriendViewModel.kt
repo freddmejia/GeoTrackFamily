@@ -1,5 +1,6 @@
 package com.example.geotrackfamily.viewModels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.geotrackfamily.models.Friend
@@ -28,6 +29,11 @@ class FriendViewModel @Inject constructor(
 
     private val _compositionFetchPossibleFriends = MutableStateFlow<Result<CompositionObj<ArrayList<Friend>, String>>>(Result.Empty)
     val compositionFetchPossibleFriends : StateFlow<Result<CompositionObj<ArrayList<Friend>, String>>> = _compositionFetchPossibleFriends
+
+
+    private val _compositionFetchFriendsRequest = MutableStateFlow<Result<CompositionObj<ArrayList<Friend>, String>>>(Result.Empty)
+    val compositionFetchFriendsRequest : StateFlow<Result<CompositionObj<ArrayList<Friend>, String>>> = _compositionFetchFriendsRequest
+
 
     private val _loadingProgress = MutableStateFlow(false)
     val loadingProgress: StateFlow<Boolean> = _loadingProgress
@@ -58,10 +64,31 @@ class FriendViewModel @Inject constructor(
             }
     }
 
+    fun fetch_friends() = viewModelScope.launch {
+        _compositionFriendRequest.value = Result.Empty
+        _loadingProgress.value = true
+        _compositionFetchPossibleFriends.value = friendRepository.fetch_friends()
+        _loadingProgress.value = false
+    }
+
     fun friend_request(user_id1: String, user_id2: String) = viewModelScope.launch {
         _compositionFriendRequest.value = Result.Empty
         _loadingProgress.value = true
         _compositionFriendRequest.value = friendRepository.friend_request(user_id1 = user_id1, user_id2 = user_id2)
+        _loadingProgress.value = false
+    }
+
+    fun fetch_friends_request() = viewModelScope.launch {
+        _compositionFetchFriendsRequest.value = Result.Empty
+        _loadingProgress.value = true
+        _compositionFetchFriendsRequest.value = friendRepository.fetch_friends_request()
+        _loadingProgress.value = false
+    }
+
+    fun accept_friend_request(user_id1: String, user_id2: String) = viewModelScope.launch {
+        _compositionFriendRequest.value = Result.Empty
+        _loadingProgress.value = true
+        _compositionFriendRequest.value = friendRepository.accept_friend_request(user_id1 = user_id1, user_id2 = user_id2)
         _loadingProgress.value = false
     }
 
@@ -71,5 +98,16 @@ class FriendViewModel @Inject constructor(
         _compositionFriendRequest.value = friendRepository.delete_friend_request(user_id1 = user_id1, user_id2 = user_id2)
         _loadingProgress.value = false
     }
+
+    fun set_compositionFetchPossibleFriends(state: Result<CompositionObj<ArrayList<Friend>, String>>)  = viewModelScope.launch{
+        _compositionFetchPossibleFriends.value = Result.Empty
+        delay(200)
+        _compositionFetchPossibleFriends.value = state
+        Log.e("COROUTINES", "set_compositionFetchPossibleFriends22: $_compositionFetchPossibleFriends.value")
+
+    }
+
+
+
 
 }

@@ -67,7 +67,8 @@
             app:strokeColor="@color/gray_7c"
             android:layout_marginHorizontal="5sp"
             app:cardUseCompatPadding="false"
-            android:elevation="1dp"
+            app:cardElevation="8sp"
+            app:cardBackgroundColor="@color/white"
             >
             <LinearLayout
                 android:layout_width="match_parent"
