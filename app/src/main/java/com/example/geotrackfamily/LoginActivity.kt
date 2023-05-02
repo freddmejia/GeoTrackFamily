@@ -64,6 +64,7 @@ class LoginActivity : AppCompatActivity() {
                             json.put("language","es")
 
                             this?.putString("user",json.toString())
+                            this?.putString("token",result.data.data.token)
                             this?.putBoolean("islogged",true)
                             this?.apply()
                         }

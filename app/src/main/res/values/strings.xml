@@ -17,8 +17,9 @@
     <string name="dont_have_friends_location">No puedes ver la ubicacion de tu amigo, agrega uno</string>
     <string name="zone_dangerous">Zonas riesgo</string>
     <string name="zone_dangerous_location">No puedes definir zonas de riesgo para tu amigo, agrega uno</string>
-
-
+    <string name="find_friend">Agrega un amigo</string>
+    <string name="find_friend_by_name_email">Escribe el nombre o e-mail</string>
+    <string name="add_friend">Agregar</string>
     <string name="shared_preferences">geo.track_family.ecu</string>
 
 

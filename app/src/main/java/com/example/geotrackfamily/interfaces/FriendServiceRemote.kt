@@ -6,6 +6,8 @@ import com.example.geotrackfamily.models.GeofenceFriend
 import com.example.geotrackfamily.utility.Utils
 import com.google.gson.annotations.SerializedName
 import retrofit2.http.Body
+import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.POST
 
 //FriendRemoteDataSource

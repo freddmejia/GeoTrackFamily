@@ -30,6 +30,10 @@ class Utils {
         const val fetch_geofence_byfriend = "$api_version/fetch_geofence_byfriend"
         const val delete_geofence_byfriend = "$api_version/delete_geofence_byfriend"
 
+        const val friend_added = 1
+        const val are_friend = 2
+        const val friend_cancel = 3
+
         fun <T> errorResult(message: String,errorBody: ResponseBody? = null): Result<T> {
             //Timber.d(message)
             var mess_d = message

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@color/white">
+        <RelativeLayout
+            android:id="@+id/rvHome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingVertical="7sp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvHome"
+                    android:layout_width="36sp"
+                    android:layout_height="36sp"
+                    app:cardBackgroundColor="@color/green_b1"
+                    app:cardCornerRadius="20sp">
+                    <ImageView
+                        android:id="@+id/imHome"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/home_icon"
+                        android:layout_gravity="center"
+                        android:padding="8sp"
+                        app:tint="@color/white" />
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rvFriend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingVertical="7sp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvFriend"
+                    android:layout_width="36sp"
+                    android:layout_height="36sp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="20sp">
+                    <ImageView
+                        android:id="@+id/imFriend"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/friend_icon"
+                        android:layout_gravity="center"
+                        android:padding="8sp"
+                        app:tint="@color/black" />
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rvZone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingVertical="7sp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvZone"
+                    android:layout_width="36sp"
+                    android:layout_height="36sp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="20sp"
+                    >
+                    <ImageView
+                        android:id="@+id/imZone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/zone_icon"
+                        android:layout_gravity="center"
+                        android:padding="8sp"
+                        app:tint="@color/black" />
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</merge>
