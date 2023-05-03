@@ -4,13 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".ProfileActivity">
     <LinearLayout
         android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <include layout="@layout/onboarding_toolbar"/>
+        <include layout="@layout/toolbar_app"/>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10sp"
+            android:layout_marginBottom="20sp"
+            app:strokeWidth="1sp"
+            app:strokeColor="@color/yellow_7d"
+            android:layout_marginHorizontal="25sp"
+            android:layout_marginTop="25sp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10sp"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="5sp">
+                <ImageView
+                    android:layout_width="24sp"
+                    android:layout_height="24sp"
+                    android:src="@drawable/user_icon"
+                    android:layout_marginRight="10sp"/>
+                <EditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/user_name"
+                    android:imeOptions="actionDone"
+                    />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvUsername"
             android:layout_width="match_parent"
@@ -20,7 +55,6 @@
             app:strokeWidth="1sp"
             app:strokeColor="@color/yellow_7d"
             android:layout_marginHorizontal="25sp"
-            android:layout_marginTop="25sp"
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -41,7 +75,8 @@
                     android:inputType="text"
                     android:background="@android:color/transparent"
                     android:hint="@string/login_email"
-                    android:text="fredd@gmail.com" />
+                    android:imeOptions="actionDone"
+                     />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
@@ -70,14 +105,15 @@
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textPassword"
+                    android:inputType="text"
                     android:background="@android:color/transparent"
                     android:hint="@string/login_password"
-                    android:text="8990"/>
+                    android:imeOptions="actionDone"
+                    />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cvLogin"
+            android:id="@+id/cvSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/green_92"
@@ -88,13 +124,30 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/login"
+                android:text="@string/update_user"
                 style="@style/bold_large"
                 android:textColor="@color/white"
                 android:gravity="center"
                 android:paddingVertical="7sp"/>
         </com.google.android.material.card.MaterialCardView>
-
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue_7d"
+            android:layout_marginHorizontal="15sp"
+            app:cardCornerRadius="10sp"
+            android:layout_marginBottom="15sp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/logout"
+                style="@style/bold_large"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:paddingVertical="7sp"/>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
     <ProgressBar
         android:id="@+id/progressBar"

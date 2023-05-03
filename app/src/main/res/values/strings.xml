@@ -2,6 +2,8 @@
     <string name="app_name">GeoTrackFamily</string>
     <string name="track_family">Track family</string>
     <string name="login">Ingresar</string>
+    <string name="update_user">Guardar</string>
+    <string name="logout">Cerrar session</string>
     <string name="register">Registrarme</string>
     <string name="title_continue">Continuar</string>
     <string name="forgot_password">Olvide mi contraseña</string>
@@ -18,13 +20,16 @@
     <string name="zone_dangerous">Zonas riesgo</string>
     <string name="zone_dangerous_location">No puedes definir zonas de riesgo para tu amigo, agrega uno</string>
     <string name="find_friend">Agrega un amigo</string>
+    <string name="profile">Perfil</string>
     <string name="find_friend_by_name_email">Escribe el nombre o e-mail</string>
     <string name="add_friend">Agregar</string>
     <string name="shared_preferences">geo.track_family.ecu</string>
     <string name="title_add_friend">Agrega un amigo</string>
     <string name="have_friends_request"> <u>Tienes solicitudes de amigos pendientes</u> </string>
     <string name="cancel">cancelar</string>
+    <string name="user_name">Escribe tu nombre</string>
     <!-- errors -->
+    <string name="error_fill_user">LLena el nombre y el email</string>
     <string name="error_fill">LLena todos los campos</string>
     <string name="error_no_data">No hay datos</string>
     <string name="error_data">Hay datos</string>

@@ -1,6 +1,7 @@
 package com.example.geotrackfamily
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -54,6 +55,12 @@ class MainAppActivity : AppCompatActivity() {
     }
 
     fun events() {
+        toolbarAppBinding.profile.setOnClickListener {
+            startActivity(
+                Intent(this@MainAppActivity, ProfileActivity::class.java)
+            )
+        }
+
         bottomBarBinding.rvHome.setOnClickListener {
             chooseSelectionMenu(fragment = HomeFragment.newInstance())
         }
@@ -63,6 +70,7 @@ class MainAppActivity : AppCompatActivity() {
         bottomBarBinding.rvZone.setOnClickListener {
             chooseSelectionMenu(fragment = ZoneFragment.newInstance())
         }
+
     }
 
     fun chooseSelectionMenu(fragment: Fragment){
