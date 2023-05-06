@@ -8,6 +8,7 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
         <LinearLayout
+            android:id="@+id/linear"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -32,7 +33,7 @@
                         app:strokeWidth="1sp"
                         app:strokeColor="@color/gray_7c"
                         android:layout_marginHorizontal="25sp"
-                        android:layout_marginTop="25sp"
+                        android:layout_marginTop="15sp"
                         >
                         <EditText
                             android:id="@+id/etUsername"
@@ -42,19 +43,28 @@
                             android:background="@android:color/transparent"
                             android:hint="@string/find_friend_by_name"
                             android:padding="10sp"
-                            android:layout_marginHorizontal="5sp"/>
+                            android:layout_marginHorizontal="5sp"
+                            android:imeOptions="actionDone"/>
                     </com.google.android.material.card.MaterialCardView>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvMyFriends"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rvPlaceHolder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center">
+                android:gravity="center"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -82,6 +92,17 @@
                 </LinearLayout>
             </RelativeLayout>
 
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 </RelativeLayout>

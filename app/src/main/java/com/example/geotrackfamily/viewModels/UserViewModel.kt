@@ -34,6 +34,13 @@ class UserViewModel  @Inject constructor(
         _loadingProgress.value = false
     }
 
+    fun register(username: String,email: String,password: String,password2: String) = viewModelScope.launch {
+        _compositionLogin.value = Result.Empty
+        _loadingProgress.value = true
+        _compositionLogin.value = userRepository.register(username = username, email = email,password = password, password2 = password2)
+        _loadingProgress.value = false
+    }
+
     fun update_user(name: String,email: String, password: String) = viewModelScope.launch {
         _compositionUpdateUser.value = Result.Empty
         _loadingProgress.value = true

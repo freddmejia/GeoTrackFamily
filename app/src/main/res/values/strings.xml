@@ -33,4 +33,6 @@
     <string name="error_fill">LLena todos los campos</string>
     <string name="error_no_data">No hay datos</string>
     <string name="error_data">Hay datos</string>
+    <string name="error_password_not_same">Las contraseñas no coinciden</string>
+    <string name="error_not_enable_gps">Habilita gps para continuar</string>
 </resources>

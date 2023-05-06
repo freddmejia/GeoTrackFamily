@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "299781459091",
+    "project_id": "wearabletfm",
+    "storage_bucket": "wearabletfm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:299781459091:android:2935180b3aeb884c969166",
+        "android_client_info": {
+          "package_name": "com.example.geotrackfamily"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "299781459091-k681u9l1150v8nup8o8s1008b6pu6bn9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN6UTXN5wWXLSDx-lI-HkkGUaIZxJ8VHk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "299781459091-k681u9l1150v8nup8o8s1008b6pu6bn9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:299781459091:android:974a63b395607111969166",
+        "android_client_info": {
+          "package_name": "tm.wearable.wearabletfm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "299781459091-k681u9l1150v8nup8o8s1008b6pu6bn9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN6UTXN5wWXLSDx-lI-HkkGUaIZxJ8VHk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "299781459091-k681u9l1150v8nup8o8s1008b6pu6bn9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

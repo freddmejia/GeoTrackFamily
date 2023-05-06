@@ -31,6 +31,10 @@ class FriendViewModel @Inject constructor(
     val compositionFetchPossibleFriends : StateFlow<Result<CompositionObj<ArrayList<Friend>, String>>> = _compositionFetchPossibleFriends
 
 
+    private val _compositionFetchFriends = MutableStateFlow<Result<CompositionObj<ArrayList<shortUser>, String>>>(Result.Empty)
+    val compositionFetchFriends : StateFlow<Result<CompositionObj<ArrayList<shortUser>, String>>> = _compositionFetchFriends
+
+
     private val _compositionFetchFriendsRequest = MutableStateFlow<Result<CompositionObj<ArrayList<Friend>, String>>>(Result.Empty)
     val compositionFetchFriendsRequest : StateFlow<Result<CompositionObj<ArrayList<Friend>, String>>> = _compositionFetchFriendsRequest
 

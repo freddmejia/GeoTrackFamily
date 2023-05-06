@@ -41,7 +41,8 @@
                     android:inputType="text"
                     android:background="@android:color/transparent"
                     android:hint="@string/login_email"
-                    android:text="fredd@gmail.com" />
+                    android:text="fredd@gmail.com"
+                    android:imeOptions="actionDone"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
@@ -73,7 +74,8 @@
                     android:inputType="textPassword"
                     android:background="@android:color/transparent"
                     android:hint="@string/login_password"
-                    android:text="8990"/>
+                    android:text="8990"
+                    android:imeOptions="actionDone"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView

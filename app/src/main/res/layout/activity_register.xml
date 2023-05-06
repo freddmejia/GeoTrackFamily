@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
     <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -39,7 +40,8 @@
                     android:layout_height="match_parent"
                     android:inputType="text"
                     android:background="@android:color/transparent"
-                    android:hint="@string/register_name"/>
+                    android:hint="@string/register_name"
+                    android:imeOptions="actionDone"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
@@ -70,7 +72,8 @@
                     android:layout_height="match_parent"
                     android:inputType="text"
                     android:background="@android:color/transparent"
-                    android:hint="@string/login_email"/>
+                    android:hint="@string/login_email"
+                    android:imeOptions="actionDone"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
@@ -101,7 +104,8 @@
                     android:layout_height="match_parent"
                     android:inputType="textPassword"
                     android:background="@android:color/transparent"
-                    android:hint="@string/login_password"/>
+                    android:hint="@string/login_password"
+                    android:imeOptions="actionDone"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
@@ -132,12 +136,13 @@
                     android:layout_height="match_parent"
                     android:inputType="textPassword"
                     android:background="@android:color/transparent"
-                    android:hint="@string/login_repeat_password"/>
+                    android:hint="@string/login_repeat_password"
+                    android:imeOptions="actionDone"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cvLogin"
+            android:id="@+id/cvRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/green_92"
@@ -156,4 +161,10 @@
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 </RelativeLayout>

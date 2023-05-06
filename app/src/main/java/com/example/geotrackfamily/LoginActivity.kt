@@ -5,11 +5,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.example.geotrackfamily.databinding.ActivityLoginBinding
+import com.example.geotrackfamily.databinding.OnboardingToolbarBinding
 import com.example.geotrackfamily.models.User
 import com.example.geotrackfamily.utility.CompositionObj
 import com.example.geotrackfamily.viewModels.UserViewModel
@@ -21,16 +23,35 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val userViewModel: UserViewModel by viewModels()
     private lateinit var toast: Toast
-    val TAG = "LoginActivity"
+    private lateinit var onboardingToolbarBinding: OnboardingToolbarBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setUpToolBar()
         toast = Toast(this)
 
         coroutines()
         events()
     }
+
+    fun setUpToolBar() {
+        onboardingToolbarBinding = OnboardingToolbarBinding.bind(binding.root)
+        setSupportActionBar(onboardingToolbarBinding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home->
+            {
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     fun events(){
         binding.cvLogin.setOnClickListener {
             val email = binding.etEmail.text.toString()
@@ -46,7 +67,6 @@ class LoginActivity : AppCompatActivity() {
     fun coroutines(){
         lifecycleScope.launchWhenCreated {
             userViewModel.compositionLogin.collect { result ->
-                Log.e(TAG, "coroutines: "+result.toString() )
                 when(result){
                     is Result.Success<CompositionObj<User,String>> ->{
                         val sharedPref = this@LoginActivity.getSharedPreferences(
