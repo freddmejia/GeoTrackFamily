@@ -1,5 +1,7 @@
 package com.example.geotrackfamily.models
 
+import java.util.function.BinaryOperator
+
 class Friend (
     var id: Int,
     var name: String,
@@ -7,7 +9,8 @@ class Friend (
     var token_firebase: String? = null,
     var image: String? = null,
     var code_qr: String? = null,
-    var is_friend: Int
+    var is_friend: Int,
+    var is_choosed: Boolean = false
 ) {
     //constructor() : this(shortUser(0,"","","","",""),0)
 }
@@ -28,7 +31,8 @@ class GeofenceFriend (
     var latitude: String,
     var longitude: String,
     var ratio: String,
+    var zone: String,
     var status: String,
 ) {
-    constructor() : this(0,0,0,"","","","")
+    constructor() : this(0,0,0,"","","","","")
 }

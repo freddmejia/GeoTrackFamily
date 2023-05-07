@@ -3,10 +3,7 @@ package com.example.geotrackfamily.viewModels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.geotrackfamily.models.Friend
-import com.example.geotrackfamily.models.FriendRequest
-import com.example.geotrackfamily.models.User
-import com.example.geotrackfamily.models.shortUser
+import com.example.geotrackfamily.models.*
 import com.example.geotrackfamily.repository.FriendRepository
 import com.example.geotrackfamily.repository.UserRepository
 import com.example.geotrackfamily.utility.CompositionObj
@@ -34,9 +31,14 @@ class FriendViewModel @Inject constructor(
     private val _compositionFetchFriends = MutableStateFlow<Result<CompositionObj<ArrayList<shortUser>, String>>>(Result.Empty)
     val compositionFetchFriends : StateFlow<Result<CompositionObj<ArrayList<shortUser>, String>>> = _compositionFetchFriends
 
-
     private val _compositionFetchFriendsRequest = MutableStateFlow<Result<CompositionObj<ArrayList<Friend>, String>>>(Result.Empty)
     val compositionFetchFriendsRequest : StateFlow<Result<CompositionObj<ArrayList<Friend>, String>>> = _compositionFetchFriendsRequest
+
+    private val _compositionGeofencesFriends = MutableStateFlow<Result<CompositionObj<ArrayList<GeofenceFriend>, String>>>(Result.Empty)
+    val compositionGeofencesFriends : StateFlow<Result<CompositionObj<ArrayList<GeofenceFriend>, String>>> = _compositionGeofencesFriends
+
+    private val _compositionGeofenceFriend = MutableStateFlow<Result<CompositionObj<GeofenceFriend, String>>>(Result.Empty)
+    val compositionGeofenceFriend : StateFlow<Result<CompositionObj<GeofenceFriend, String>>> = _compositionGeofenceFriend
 
 
     private val _loadingProgress = MutableStateFlow(false)
@@ -110,6 +112,28 @@ class FriendViewModel @Inject constructor(
         Log.e("COROUTINES", "set_compositionFetchPossibleFriends22: $_compositionFetchPossibleFriends.value")
 
     }
+
+    fun saveFriendGeofence(user_id1: String, user_id2: String,
+                           latitude: String, longitude: String,
+                           ratio: String, zone: String) = viewModelScope.launch {
+        _compositionGeofenceFriend.value = Result.Empty
+        _loadingProgress.value = true
+        _compositionGeofenceFriend.value = friendRepository.saveFriendGeofence(
+            user_id1 = user_id1, user_id2 = user_id2,
+            latitude = latitude, longitude = longitude,
+            ratio = ratio, zone = zone
+        )
+        _loadingProgress.value = false
+    }
+
+    fun fetch_geofence_byfriend(user_id1: String, user_id2: String) = viewModelScope.launch {
+        _compositionGeofencesFriends.value = Result.Empty
+        _loadingProgress.value = true
+        _compositionGeofencesFriends.value = friendRepository.fetch_geofence_byfriend(user_id1 = user_id1, user_id2 = user_id2)
+        _loadingProgress.value = false
+    }
+
+
 
 
 

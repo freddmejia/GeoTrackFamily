@@ -1,27 +1,27 @@
 package com.example.geotrackfamily.fragment
 
 import android.Manifest
+
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.LocationManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.geotrackfamily.R
+
 import com.example.geotrackfamily.adapter.FriendsZoneAdapter
-import com.example.geotrackfamily.databinding.FriendFragmentBinding
 import com.example.geotrackfamily.databinding.ZoneFragmentBinding
 import com.example.geotrackfamily.models.Friend
-import com.example.geotrackfamily.models.shortUser
 import com.example.geotrackfamily.observer.UIObserverGeneric
 import com.example.geotrackfamily.utility.CompositionObj
 import com.example.geotrackfamily.viewModels.FriendViewModel
@@ -31,14 +31,28 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import dagger.hilt.android.AndroidEntryPoint
-import android.location.LocationManager
-import androidx.core.app.ActivityCompat
-
+import java.util.*
+import kotlin.collections.ArrayList
+import com.example.geotrackfamily.R
+import com.example.geotrackfamily.databinding.ToolbarAppBinding
+import com.example.geotrackfamily.dialogs.GeoDialogs
+import com.example.geotrackfamily.models.GeofenceFriend
+import com.example.geotrackfamily.models.User
+import com.example.geotrackfamily.observer.UIObserverFriendGeoZone
+import com.google.android.gms.common.api.Status
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import org.json.JSONObject
 
 @AndroidEntryPoint
 class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>,
-    OnMapReadyCallback {
+    OnMapReadyCallback, UIObserverFriendGeoZone {
     private var binding: ZoneFragmentBinding? = null
     private val friendViewModel: FriendViewModel by viewModels()
     private lateinit var toast: Toast
@@ -49,6 +63,13 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
     private var currentLocation: LatLng ? = null
     private val REQUEST_LOCATION_PERMISSION = 1
     private val TAG = "ZoneFragment"
+    private var placesClient: PlacesClient ? = null
+    private var friendChoosed : Friend? = null
+    private var latitudeFriend : String = ""
+    private var longitudeFriend : String = ""
+    private var zoneFriend : String = ""
+    private var ratioFriend : String = ""
+    private lateinit var user: User
     companion object{
         fun newInstance(): ZoneFragment {
             return ZoneFragment()
@@ -64,12 +85,22 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
         friendsZoneAdapter = FriendsZoneAdapter(this@ZoneFragment.requireContext(), friendsList,this@ZoneFragment)
         binding?.rvMyFriends?.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding?.rvMyFriends?.adapter = friendsZoneAdapter
+        ratioFriend = "400"
+
+        val sharedPref = this@ZoneFragment.requireContext().getSharedPreferences(
+            getString(R.string.shared_preferences), Context.MODE_PRIVATE)
+
+        user = User(JSONObject(sharedPref!!.getString("user","")))
+
+        Places.initialize(this@ZoneFragment.requireContext(), "AIzaSyC1GP9e25BZ7ga1aYSisdpLvuoopiGkoQ4");
+        placesClient = Places.createClient(this@ZoneFragment.requireContext())
 
         binding?.mapView?.onCreate(savedInstanceState)
-        binding?.mapView?.getMapAsync(this@ZoneFragment)
+        binding?.mapView?.onResume()
+        binding?.mapView?.getMapAsync(this)
 
         checkPermissionMap()
-
+        placesGoogleMapsApi()
         events()
         coroutines()
         api()
@@ -125,12 +156,38 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
                 }
             }
         }
+        lifecycleScope.launchWhenCreated {
+            friendViewModel.compositionGeofenceFriend.collect { result ->
+                when(result) {
+                    is com.example.geotrackfamily.utility.Result.Success<CompositionObj<GeofenceFriend, String>> -> {
+                        showToast(message = result.data.message)
+                    }
+                    is com.example.geotrackfamily.utility.Result.Error -> {
+                        showToast(message = result.error)
+                    }
+                    else -> Unit
+                }
+
+            }
+        }
+        lifecycleScope.launchWhenCreated {
+            friendViewModel.compositionGeofencesFriends.collect { result ->
+                when(result) {
+                    is com.example.geotrackfamily.utility.Result.Success<CompositionObj<java.util.ArrayList<GeofenceFriend>, String>> -> {
+                        
+                    }
+                    is com.example.geotrackfamily.utility.Result.Error -> {
+                        showToast(message = result.error)
+                    }
+                    else -> Unit
+                }
+            }
+        }
     }
 
     fun api() {
         friendViewModel.fetch_friends()
     }
-
 
     fun showToast(message: String){
         toast?.cancel()
@@ -147,15 +204,18 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
 
         val locationManager = this@ZoneFragment.requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) || locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Log.e(TAG, "checkPermissionMap: permission allowed ll", )
+            Log.e(TAG, "checkPermissionMap: permission allowed ll")
             var location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             var location2 = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-            var currentLocationV = if (location != null) location else if (location2 != null) location2 else null
+            var currentLocationV = if (location != null) location else  location2
 
-            Log.e(TAG, "checkPermissionMap: location "+location.toString() )
-            if (currentLocationV != null)
-                currentLocation = LatLng(location!!.latitude, location!!.longitude)
-            return
+            Log.e(TAG, "checkPermissionMap: location "+currentLocationV.toString() +"\n"+
+                currentLocationV?.latitude.toString() + " "+currentLocationV?.longitude.toString()
+            )
+            if (currentLocationV != null) {
+                currentLocation = LatLng(currentLocationV!!.latitude, currentLocationV!!.longitude)
+                return
+            }
         }
 
         showToast(message = resources.getString(R.string.error_not_enable_gps))
@@ -168,13 +228,47 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.e(TAG, "onRequestPermissionsResult: ok", )
+                Log.e(TAG, "onRequestPermissionsResult: ok")
                 // Permiso de ubicación concedido, puedes obtener la ubicación actual del dispositivo
             } else {
-                Log.e(TAG, "onRequestPermissionsResult: denied", )
+                Log.e(TAG, "onRequestPermissionsResult: denied")
                 // Permiso de ubicación denegado, debes informar al usuario que la funcionalidad de ubicación no estará disponible
             }
         }
+    }
+
+    fun placesGoogleMapsApi() {
+
+        val placesSearchFragment = this@ZoneFragment.childFragmentManager.findFragmentById(R.id.places_search_fragment) as AutocompleteSupportFragment
+
+        placesSearchFragment.setPlaceFields(
+            Arrays.asList(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.LAT_LNG
+            )
+        )
+        placesSearchFragment.setTypeFilter(TypeFilter.ADDRESS)
+        //placesSearchFragment.setCountry("MX") // Opcional: establece el país para restringir los resultados de búsqueda a un país específico
+        placesSearchFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                Log.e(TAG, "onPlaceSelected: place "+place.name )
+                zoneFriend = place.name
+                latitudeFriend = ""
+                longitudeFriend = ""
+                val latLng = place.latLng
+                val markerOptions = MarkerOptions()
+                    .position(latLng!!)
+                    .title(place.name)
+                googleMap.addMarker(markerOptions)
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
+            }
+
+            override fun onError(status: Status) {
+                Log.e(TAG, "Error al buscar lugar: $status")
+            }
+        })
+
     }
 
     override fun onDestroyView() {
@@ -183,34 +277,67 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
     }
 
     override fun onOkButton(data: Friend) {
+        Log.e(TAG, "onOkButton: ", )
+        var isChoosed = false
+        if (latitudeFriend.isNotEmpty() && longitudeFriend.isNotEmpty()) {
+            friendChoosed = data
+            isChoosed = true
+        }
+        if (isChoosed) {
+            friendsList.forEach {
+                it.is_choosed = it.id == friendChoosed?.id
+            }
+            friendsZoneAdapter.setNewData(friendsList)
+
+            GeoDialogs.friends_geozone_dialog(
+                friend = friendChoosed!!,
+                context = this@ZoneFragment.requireContext(),
+                observer = this
+            )
+        }
+
+
+
 
     }
 
     override fun onCancelButton(data: Friend) {
         Log.e("", "onCancelButton: " )
+        friendViewModel.fetch_geofence_byfriend(
+            user_id1 = user.id.toString(),
+            user_id2 = data.id.toString()
+        )
     }
 
     override fun onMapReady(p0: GoogleMap) {
-        Log.e(TAG, "onMapReady: " )
         googleMap = p0
         googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
         googleMap.uiSettings.isZoomControlsEnabled = true
+        googleMap.uiSettings.isCompassEnabled = true
+        googleMap.uiSettings.isMapToolbarEnabled = true
 
-        //if (currentLocation != null){
-            Log.e(TAG, "onMapReady: 11", )
-            val initialLocation = LatLng(37.7749, -122.4194)
-            //val initialLocation = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
+        googleMap?.uiSettings?.isScrollGesturesEnabled = true
+        googleMap?.uiSettings?.isZoomGesturesEnabled = true
+        googleMap?.uiSettings?.isRotateGesturesEnabled = true
+        googleMap?.uiSettings?.isTiltGesturesEnabled = false
+
+
+        if (currentLocation != null){
+            Log.e(TAG, "onMapReady: 1111")
+            //val initialLocation = LatLng(37.7749, -122.4194)
+            val initialLocation = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
             val cameraPosition = CameraPosition.Builder().target(initialLocation).zoom(10f).build()
             googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
             googleMap.setOnMapClickListener { point ->
+                Log.e(TAG, "onMapReady setOnMapClickListener: ", )
                 draftCircleOnMap(
                     latitude = point.latitude,
                     longitude = point.longitude
                 )
             }
             return
-        //}
+        }
 
         //Log.e(TAG, "onMapReady: 22", )
         //checkPermissionMap()
@@ -219,6 +346,8 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
     }
 
     fun draftCircleOnMap(latitude: Double, longitude: Double) {
+        latitudeFriend = latitude.toString()
+        longitudeFriend = longitude.toString()
         val radiusInMeters = 400
         val center = LatLng(latitude, longitude)
         val radius = radiusInMeters.toDouble()
@@ -227,6 +356,38 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
             .radius(radius)
             .strokeColor(Color.RED)
             .fillColor(Color.argb(70, 255, 0, 0))
+        googleMap.clear()
         val circle = googleMap.addCircle(circleOptions)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding?.mapView?.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding?.mapView?.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding?.mapView?.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        binding?.mapView?.onSaveInstanceState(outState)
+    }
+
+    override fun addedGeo() {
+        friendViewModel.saveFriendGeofence(
+            user_id1 = user.id.toString(),
+            user_id2 = friendChoosed?.id.toString(),
+            longitude = longitudeFriend,
+            latitude = latitudeFriend,
+            ratio = ratioFriend,
+            zone = zoneFriend
+        )
     }
 }

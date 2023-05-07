@@ -12,7 +12,9 @@ import com.example.geotrackfamily.observer.UIObserverGeneric
 import com.example.geotrackfamily.R
 import com.example.geotrackfamily.adapter.FriendAdapter
 import com.example.geotrackfamily.adapter.FriendsRequestAdapter
+import com.example.geotrackfamily.databinding.AddGeozoneAlertBinding
 import com.example.geotrackfamily.models.Friend
+import com.example.geotrackfamily.observer.UIObserverFriendGeoZone
 import com.example.geotrackfamily.observer.UIObserverFriendRequest
 
 class GeoDialogs {
@@ -32,6 +34,25 @@ class GeoDialogs {
             alertDialogBuilder.setView(binding.root)
             alertDialogBuilder.show()
             alertDialogBuilder.getButton(Dialog.BUTTON_NEGATIVE).setTextColor(context.resources.getColor(R.color.red))
+        }
+        fun friends_geozone_dialog(friend: Friend, context: Context, observer: UIObserverFriendGeoZone){
+            val alertDialogBuilder = androidx.appcompat.app.AlertDialog.Builder(context).setCancelable(false).create()
+            val binding = AddGeozoneAlertBinding.bind(LayoutInflater.from(context).inflate(R.layout.add_geozone_alert,null))
+            binding.title.text = context.resources.getString(R.string.geozone_alert_title) + " "+friend.name
+            alertDialogBuilder.setButton(Dialog.BUTTON_POSITIVE,context.resources.getString(R.string.accept),
+                DialogInterface.OnClickListener { dialogInterface, i ->
+                    observer.addedGeo()
+                    dialogInterface.dismiss()
+                })
+            alertDialogBuilder.setButton(Dialog.BUTTON_NEGATIVE,context.resources.getString(R.string.cancel),
+                DialogInterface.OnClickListener { dialogInterface, i ->
+                    dialogInterface.dismiss()
+                })
+
+            alertDialogBuilder.setView(binding.root)
+            alertDialogBuilder.show()
+            alertDialogBuilder.getButton(Dialog.BUTTON_NEGATIVE).setTextColor(context.resources.getColor(R.color.red))
+            alertDialogBuilder.getButton(Dialog.BUTTON_POSITIVE).setTextColor(context.resources.getColor(R.color.blue_a7))
         }
     }
 }

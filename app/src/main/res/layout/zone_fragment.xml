@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -35,16 +36,18 @@
                         android:layout_marginHorizontal="25sp"
                         android:layout_marginTop="15sp"
                         >
+
                         <EditText
                             android:id="@+id/etUsername"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:inputType="text"
+                            android:layout_marginHorizontal="5sp"
                             android:background="@android:color/transparent"
                             android:hint="@string/find_friend_by_name"
+                            android:imeOptions="actionDone"
+                            android:inputType="text"
                             android:padding="10sp"
-                            android:layout_marginHorizontal="5sp"
-                            android:imeOptions="actionDone"/>
+                            tools:ignore="TouchTargetSizeCheck" />
                     </com.google.android.material.card.MaterialCardView>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvMyFriends"
@@ -92,6 +95,12 @@
                 </LinearLayout>
             </RelativeLayout>
 
+
+            <fragment
+                android:id="@+id/places_search_fragment"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mapView"
                 android:layout_width="match_parent"

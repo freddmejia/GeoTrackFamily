@@ -37,7 +37,7 @@ interface FriendServiceRemote {
     suspend fun updateFriendGeofence(@Body requestBody: Map<String,String>): retrofit2.Response<GeofenceFriendResponseApi>
 
     @POST(Utils.fetch_geofence_byfriend)
-    suspend fun fetchFriendGeofence(@Body requestBody: Map<String,String>): retrofit2.Response<GeofenceFriendResponseApi>
+    suspend fun fetchFriendGeofence(@Body requestBody: Map<String,String>): retrofit2.Response<GeofencesFriendResponseApi>
 
     @POST(Utils.delete_geofence_byfriend)
     suspend fun deleteFriendGeofence(@Body requestBody: Map<String,String>): retrofit2.Response<GeofenceFriendResponseApi>
@@ -65,6 +65,11 @@ class RequestFriendResponseApi {
 
 class GeofenceFriendResponseApi {
     @SerializedName("geofence_friend") var geofence_friend: GeofenceFriend = GeofenceFriend()
+    @SerializedName("message") var message: String = ""
+}
+
+class GeofencesFriendResponseApi {
+    @SerializedName("geofences_friend") var geofences_friend: ArrayList<GeofenceFriend> = arrayListOf()
     @SerializedName("message") var message: String = ""
 }
 
