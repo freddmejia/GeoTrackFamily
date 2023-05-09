@@ -60,12 +60,14 @@ class FriendRepository @Inject constructor(
             try {
                 val response = friendRemoteDataSource.fetchFriends()
                 val body = response.body()
+                Log.e("", "fetch_friends: " +body.toString() )
                 if (body != null) {
                     val ab = CompositionObj(response.body()!!.friends, response.body()!!.message)
                     Result.Success(ab)
                 }
                 else{
-                    //val errorBody = (response.errorBody() as HttpException).response()?.errorBody()?.string()
+                    Log.e("", "fetch_friends: " +response.errorBody()?.string() )
+
                     Utils.errorResult( message = "",errorBody = response.errorBody()!!)
                 }
             }catch (e: Exception){
@@ -192,4 +194,23 @@ class FriendRepository @Inject constructor(
         }
     }
 
+    suspend fun delete_geofence_byfriend(geofenceId: String): Result<CompositionObj<GeofenceFriend, String>> {
+        return withContext(Dispatchers.Default){
+            try {
+                val requestBody: MutableMap<String, String> = HashMap()
+                requestBody["geofence_id"] = geofenceId
+                val response = friendRemoteDataSource.deleteFriendGeofence(requestBody = requestBody)
+                val body = response.body()
+                if (body != null) {
+                    val ab = CompositionObj(response.body()!!.geofence_friend, response.body()!!.message)
+                    Result.Success(ab)
+                }
+                else{
+                    Utils.errorResult( message = "",errorBody = response.errorBody()!!)
+                }
+            }catch (e: Exception){
+                Utils.errorResult(message = e.message ?: e.toString())
+            }
+        }
+    }
 }

@@ -31,7 +31,6 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var toast: Toast
     private lateinit var toolbarAppBinding: ToolbarAppBinding
     private lateinit var sharedPref: SharedPreferences
-    val TAG = "ProfileActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

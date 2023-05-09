@@ -133,7 +133,12 @@ class FriendViewModel @Inject constructor(
         _loadingProgress.value = false
     }
 
-
+    fun delete_geofence_byfriend(geofenceId: String) = viewModelScope.launch {
+        _compositionGeofenceFriend.value = Result.Empty
+        _loadingProgress.value = true
+        _compositionGeofenceFriend.value = friendRepository.delete_geofence_byfriend(geofenceId = geofenceId)
+        _loadingProgress.value = false
+    }
 
 
 

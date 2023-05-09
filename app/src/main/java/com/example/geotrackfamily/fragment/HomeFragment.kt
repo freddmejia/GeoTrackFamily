@@ -88,6 +88,7 @@ class HomeFragment : Fragment(R.layout.home_fragment), UIObserverGeneric<Friend>
     }
 
     fun api() {
+        Log.e("", "api: user " +user.id.toString() )
         acceptOrDeleteFriend = 0
         friendViewModel.fetch_friends()
         friendViewModel.fetch_friends_request()
@@ -110,8 +111,6 @@ class HomeFragment : Fragment(R.layout.home_fragment), UIObserverGeneric<Friend>
                         friendsList.clear()
                         friendsList.addAll(result.data.data)
 
-                        Log.e("coroutines",
-                                tmp_friendsList.size.toString() + " ++ "+friendsList.size.toString())
 
                         if (friendsList.size == 0 && tmp_friendsList.size > 0){
                             friendsList.clear()

@@ -30,6 +30,7 @@
     <string name="accept">Aceptar</string>
     <string name="user_name">Escribe tu nombre</string>
     <string name="geozone_alert_title">Quieres guardar esta gezona para: </string>
+    <string name="geofences_friend">Geofences</string>
     <!-- errors -->
     <string name="error_fill_user">LLena el nombre y el email</string>
     <string name="error_fill">LLena todos los campos</string>

@@ -46,13 +46,14 @@ import com.example.geotrackfamily.dialogs.GeoDialogs
 import com.example.geotrackfamily.models.GeofenceFriend
 import com.example.geotrackfamily.models.User
 import com.example.geotrackfamily.observer.UIObserverFriendGeoZone
+import com.example.geotrackfamily.observer.UIObserverGeofenceD
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import org.json.JSONObject
 
 @AndroidEntryPoint
 class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>,
-    OnMapReadyCallback, UIObserverFriendGeoZone {
+    OnMapReadyCallback, UIObserverFriendGeoZone, UIObserverGeofenceD {
     private var binding: ZoneFragmentBinding? = null
     private val friendViewModel: FriendViewModel by viewModels()
     private lateinit var toast: Toast
@@ -174,7 +175,10 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
             friendViewModel.compositionGeofencesFriends.collect { result ->
                 when(result) {
                     is com.example.geotrackfamily.utility.Result.Success<CompositionObj<java.util.ArrayList<GeofenceFriend>, String>> -> {
-                        
+                        GeoDialogs.friends_geozone_delete_dialog(
+                            geozeones =  result.data.data,
+                            context = this@ZoneFragment.requireContext(),
+                            observer  = this@ZoneFragment)
                     }
                     is com.example.geotrackfamily.utility.Result.Error -> {
                         showToast(message = result.error)
@@ -285,7 +289,7 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
         }
         if (isChoosed) {
             friendsList.forEach {
-                it.is_choosed = it.id == friendChoosed?.id
+                //it.is_choosed = it.id == friendChoosed?.id
             }
             friendsZoneAdapter.setNewData(friendsList)
 
@@ -390,4 +394,9 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
             zone = zoneFriend
         )
     }
+
+    override fun deleteGeofence(geofence: GeofenceFriend) {
+        friendViewModel.delete_geofence_byfriend(geofenceId = geofence.id.toString())
+    }
+
 }
