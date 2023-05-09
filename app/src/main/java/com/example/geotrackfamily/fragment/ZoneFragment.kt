@@ -3,6 +3,7 @@ package com.example.geotrackfamily.fragment
 import android.Manifest
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.LocationManager
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.geotrackfamily.GeofenceFriendActivity
 
 import com.example.geotrackfamily.adapter.FriendsZoneAdapter
 import com.example.geotrackfamily.databinding.ZoneFragmentBinding
@@ -49,11 +51,12 @@ import com.example.geotrackfamily.observer.UIObserverFriendGeoZone
 import com.example.geotrackfamily.observer.UIObserverGeofenceD
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.gson.Gson
 import org.json.JSONObject
 
 @AndroidEntryPoint
 class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>,
-    OnMapReadyCallback, UIObserverFriendGeoZone, UIObserverGeofenceD {
+    OnMapReadyCallback, UIObserverFriendGeoZone {
     private var binding: ZoneFragmentBinding? = null
     private val friendViewModel: FriendViewModel by viewModels()
     private lateinit var toast: Toast
@@ -157,36 +160,8 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
                 }
             }
         }
-        lifecycleScope.launchWhenCreated {
-            friendViewModel.compositionGeofenceFriend.collect { result ->
-                when(result) {
-                    is com.example.geotrackfamily.utility.Result.Success<CompositionObj<GeofenceFriend, String>> -> {
-                        showToast(message = result.data.message)
-                    }
-                    is com.example.geotrackfamily.utility.Result.Error -> {
-                        showToast(message = result.error)
-                    }
-                    else -> Unit
-                }
 
-            }
-        }
-        lifecycleScope.launchWhenCreated {
-            friendViewModel.compositionGeofencesFriends.collect { result ->
-                when(result) {
-                    is com.example.geotrackfamily.utility.Result.Success<CompositionObj<java.util.ArrayList<GeofenceFriend>, String>> -> {
-                        GeoDialogs.friends_geozone_delete_dialog(
-                            geozeones =  result.data.data,
-                            context = this@ZoneFragment.requireContext(),
-                            observer  = this@ZoneFragment)
-                    }
-                    is com.example.geotrackfamily.utility.Result.Error -> {
-                        showToast(message = result.error)
-                    }
-                    else -> Unit
-                }
-            }
-        }
+
     }
 
     fun api() {
@@ -300,16 +275,13 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
             )
         }
 
-
-
-
     }
 
     override fun onCancelButton(data: Friend) {
-        Log.e("", "onCancelButton: " )
-        friendViewModel.fetch_geofence_byfriend(
-            user_id1 = user.id.toString(),
-            user_id2 = data.id.toString()
+        val intent = Intent(this@ZoneFragment.requireContext(), GeofenceFriendActivity::class.java)
+        intent.putExtra("friend", Gson().toJson(data))
+        startActivity(
+            intent
         )
     }
 
@@ -395,8 +367,5 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
         )
     }
 
-    override fun deleteGeofence(geofence: GeofenceFriend) {
-        friendViewModel.delete_geofence_byfriend(geofenceId = geofence.id.toString())
-    }
 
 }

@@ -11,12 +11,20 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <include layout="@layout/toolbar_app"/>
-
+        <TextView
+            android:id="@+id/tvNameUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            style="@style/bold_medium"
+            android:layout_marginBottom="10sp"
+            android:layout_marginTop="15sp"
+            android:layout_marginHorizontal="10sp"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvGeofences"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10sp"
+            android:layout_marginHorizontal="15sp"
             android:layout_marginTop="15sp"/>
     </LinearLayout>
     <ProgressBar

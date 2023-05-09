@@ -31,6 +31,8 @@
     <string name="user_name">Escribe tu nombre</string>
     <string name="geozone_alert_title">Quieres guardar esta gezona para: </string>
     <string name="geofences_friend">Geofences</string>
+    <string name="geofences_friend_lat">Lat.</string>
+    <string name="geofences_friend_long">Long.</string>
     <!-- errors -->
     <string name="error_fill_user">LLena el nombre y el email</string>
     <string name="error_fill">LLena todos los campos</string>

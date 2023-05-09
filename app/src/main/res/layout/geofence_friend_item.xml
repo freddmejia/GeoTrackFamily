@@ -10,33 +10,81 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingHorizontal="10sp"
-        android:paddingVertical="10sp"
-        >
+        android:paddingVertical="15sp">
+
         <TextView
             android:id="@+id/tvZone"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:text="Calle de la hacienda de pavones
-Calle de la hacienda de pavones
-Calle de la hacienda de pavones
-Calle de la hacienda de pavones
-Calle de la hacienda de pavones"
+            android:text="Calle de la hacienda de pavones"
             style="@style/normal_medium"
             android:maxLines="6"
             android:ellipsize="end"
-            android:layout_marginRight="8sp"
             android:layout_gravity="center"
+            android:layout_marginBottom="10sp"
             />
-        <ImageView
-            android:id="@+id/deleteGeofence"
-            android:layout_width="25sp"
-            android:layout_height="25sp"
-            android:src="@drawable/user_delete_icon"
-            android:layout_gravity="bottom"
-            android:clickable="true"
-            android:focusable="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10sp">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginRight="5sp">
+                <TextView
+                    android:text="@string/geofences_friend_lat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/bold_medium"
+                    android:layout_marginBottom="4sp"/>
+                <TextView
+                    android:id="@+id/tvlat"
+                    android:text="12.1212"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/normal_medium"
+                    android:layout_marginBottom="4sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:text="@string/geofences_friend_long"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/bold_medium"
+                    android:layout_marginBottom="4sp"/>
+                <TextView
+                    android:id="@+id/tvlong"
+                    android:text="12.1212"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/normal_medium"
+                    android:layout_marginBottom="4sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
+
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/deleteGeofence"
+                android:layout_width="25sp"
+                android:layout_height="25sp"
+                android:src="@drawable/user_delete_icon"
+                android:layout_gravity="bottom"
+                android:clickable="true"
+                android:focusable="true"/>
+        </LinearLayout>
     </LinearLayout>
+
 </com.google.android.material.card.MaterialCardView>

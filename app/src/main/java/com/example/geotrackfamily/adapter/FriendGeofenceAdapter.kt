@@ -16,6 +16,8 @@ class FriendGeofenceAdapter(val context: Context, var list: List<GeofenceFriend>
         private val binding = binding
         fun binData(shortUser: GeofenceFriend, observer: UIObserverGeofenceD){
             binding.tvZone.text = shortUser.zone
+            binding.tvlat.text = shortUser.latitude
+            binding.tvlong.text = shortUser.longitude
             binding.deleteGeofence.setOnClickListener{
                 observer.deleteGeofence(geofence = shortUser)
             }
