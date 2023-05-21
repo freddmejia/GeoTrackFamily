@@ -1,13 +1,17 @@
 package com.example.geotrackfamily
 
+import android.Manifest
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -20,6 +24,8 @@ import com.example.geotrackfamily.databinding.ToolbarAppBinding
 import com.example.geotrackfamily.fragment.FriendFragment
 import com.example.geotrackfamily.fragment.HomeFragment
 import com.example.geotrackfamily.fragment.ZoneFragment
+import com.example.geotrackfamily.utility.LocationService
+import com.example.geotrackfamily.utility.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,6 +45,15 @@ class MainAppActivity : AppCompatActivity() {
 
         events()
         chooseSelectionMenu(fragment = HomeFragment.newInstance())
+
+        if ((ContextCompat.checkSelfPermission(applicationContext,
+                Manifest.permission.ACCESS_FINE_LOCATION) !=
+                    PackageManager.PERMISSION_GRANTED)) {
+            Utils.permissionLocation(this@MainAppActivity, this@MainAppActivity)
+        }
+        else{
+            initServiceLocation()
+        }
     }
 
     override fun onBackPressed() {
@@ -165,6 +180,50 @@ class MainAppActivity : AppCompatActivity() {
     fun appeareance(cardView: CardView, imageView: ImageView, colorCv: Int, colorIm: Int){
         cardView.setCardBackgroundColor(ContextCompat.getColor(this, colorCv))
         imageView.setColorFilter(ContextCompat.getColor(this, colorIm), PorterDuff.Mode.SRC_IN)
+    }
+
+
+    private fun isServiceNotRunning(serviceClass: Class<*>): Boolean {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+
+        for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
+                                            grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            1 -> {
+                if (grantResults.isNotEmpty() && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED) {
+                    if ((ContextCompat.checkSelfPermission(this@MainAppActivity,
+                            Manifest.permission.ACCESS_FINE_LOCATION) ===
+                                PackageManager.PERMISSION_GRANTED)) {
+                        initServiceLocation()
+                    }
+                } else {
+                    Toast.makeText(this,resources.getString(R.string.ask_permission_location), Toast.LENGTH_LONG).show()
+                }
+                return
+            }
+        }
+    }
+
+    fun initServiceLocation() {
+        try {
+            val intent = Intent(this, LocationService::class.java)
+            if (isServiceNotRunning(LocationService::class.java)) {
+                startService(intent)
+            }
+        }catch (e: java.lang.Exception){
+            Log.e(TAG, "initServiceLocation: "+e.message.toString() )
+        }
     }
 
 }

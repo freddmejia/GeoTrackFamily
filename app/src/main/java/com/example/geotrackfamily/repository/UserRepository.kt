@@ -2,6 +2,8 @@ package com.example.geotrackfamily.repository
 
 import android.util.Log
 import com.example.geotrackfamily.datasources.UserRemoteDataSource
+import com.example.geotrackfamily.interfaces.UserServiceRemote
+import com.example.geotrackfamily.models.LocationUser
 import com.example.geotrackfamily.models.User
 import com.example.geotrackfamily.models.shortUser
 import com.example.geotrackfamily.utility.CompositionObj
@@ -75,6 +77,28 @@ class UserRepository  @Inject constructor(
                 val body = response.body()
                 if (body != null) {
                     val ab = CompositionObj<shortUser,String>(response.body()!!.user, response.body()!!.message)
+                    Result.Success(ab)
+                }
+                else{
+                    errorResult( message = "",errorBody = response.errorBody()!!)
+                }
+            }catch (e: Exception){
+                errorResult(message = e.message ?: e.toString())
+            }
+        }
+    }
+
+    suspend fun save_location(user_id: String, latitude: String,longitude: String): Result<CompositionObj<LocationUser, String>> {
+        return withContext(Dispatchers.Default){
+            try {
+                val requestBody: MutableMap<String, String> = HashMap()
+                requestBody["user_id"] = user_id
+                requestBody["latitude"] = latitude
+                requestBody["longitude"] = longitude
+                val response = userRemoteDataSource.saveLocation(requestBody = requestBody)
+                val body = response.body()
+                if (body != null) {
+                    val ab = CompositionObj(response.body()!!.location_user, response.body()!!.message)
                     Result.Success(ab)
                 }
                 else{

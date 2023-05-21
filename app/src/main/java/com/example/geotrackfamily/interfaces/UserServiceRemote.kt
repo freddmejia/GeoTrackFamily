@@ -1,6 +1,7 @@
 package com.example.geotrackfamily.interfaces
 
 import com.example.geotrackfamily.models.Health
+import com.example.geotrackfamily.models.LocationUser
 import com.example.geotrackfamily.models.User
 import com.example.geotrackfamily.models.shortUser
 import com.example.geotrackfamily.utility.Utils
@@ -31,6 +32,9 @@ interface UserServiceRemote {
     @POST(Utils.update_health_data_user)
     suspend fun updateHealthDataUser (@Body requestBody: Map<String,String>): retrofit2.Response<HealthResponseApi>
 
+    @POST(Utils.save_location)
+    suspend fun saveLocation (@Body requestBody: Map<String,String>): retrofit2.Response<LocationResponseApi>
+
 }
 class UserResponseApi {
     @SerializedName("user") var user: User = User()
@@ -43,5 +47,10 @@ class UserShortResponseApi {
 
 class HealthResponseApi {
     @SerializedName("health_data") var health_data: Health = Health()
+    @SerializedName("message") var message: String = ""
+}
+
+class LocationResponseApi {
+    @SerializedName("location_user") var location_user: LocationUser = LocationUser()
     @SerializedName("message") var message: String = ""
 }

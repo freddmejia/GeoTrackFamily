@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 import com.example.geotrackfamily.utility.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -46,6 +47,10 @@ class UserViewModel  @Inject constructor(
         _loadingProgress.value = true
         _compositionUpdateUser.value = userRepository.update_user(email = email, password = password, name = name)
         _loadingProgress.value = false
+    }
+
+    fun save_location(user_id: String, latitude: String, longitude: String) = viewModelScope.launch (Dispatchers.IO) {
+        userRepository.save_location(user_id = user_id, latitude = latitude, longitude = longitude)
     }
 
 }

@@ -86,6 +86,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC1GP9e25BZ7ga1aYSisdpLvuoopiGkoQ4" />
+        <service android:name=".utility.LocationService" />
+
     </application>
 
 </manifest>

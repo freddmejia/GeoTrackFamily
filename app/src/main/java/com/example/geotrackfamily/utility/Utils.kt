@@ -1,5 +1,10 @@
 package com.example.geotrackfamily.utility
 
+import android.Manifest
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
+import androidx.core.app.ActivityCompat
 import okhttp3.ResponseBody
 import org.json.JSONObject
 
@@ -18,6 +23,8 @@ class Utils {
         const val update_health_data_user = "$api_version/update_health_data_user"
         const val forgot_password_step_one = "$api_version/forgot_password_step_one"
         const val update_password_step_last = "$api_version/update_password_step_last"
+        const val save_location = "$api_version/save_location"
+
 
         //friends
         const val fetch_possible_friends = "$api_version/fetch_possible_friends"
@@ -44,6 +51,24 @@ class Utils {
                 mess_d = json.getString("message")
             }
             return Result.Error(mess_d)
+        }
+
+        fun permissionLocation(activity: Activity, context: Context) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(activity,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+            } else {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("Se necesita permiso para acceder a la ubicación.")
+                    .setTitle("Solicitud de permiso")
+                    .setPositiveButton("OK") { _, _ ->
+                        ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+                    }
+                val dialog = builder.create()
+                dialog.show()
+            }
         }
     }
 }
