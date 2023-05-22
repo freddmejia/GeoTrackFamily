@@ -12,6 +12,7 @@ class Utils {
     companion object{
         const val api_version = "/api"
         const val domainApi = "http://192.168.1.16:8000/"
+        const val urlSocket = "http://192.168.1.16:8001"
 
         //user
         const val login = "$api_version/login"

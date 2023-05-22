@@ -132,7 +132,8 @@ class LocationService : Service() {
         user = User(JSONObject(prefsUser!!.getString("user","")))
         CoroutineScope(Dispatchers.Main).launch {
             val result = userRepository.save_location(
-                user_id = user.id.toString(),
+                //user_id = user.id.toString(),
+                user_id = "13",
                 latitude = latitude.toString(),
                 longitude = longitude.toString()
             )

@@ -12,7 +12,7 @@ class Friend (
     var is_friend: Int,
     var is_choosed: Boolean = false
 ) {
-    //constructor() : this(shortUser(0,"","","","",""),0)
+    constructor() : this(0,"","","","","",0,false)
 }
 
 class FriendRequest (
