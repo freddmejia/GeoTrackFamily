@@ -184,7 +184,9 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
                                 .title("Ubication")
 
                             googleMap?.addMarker(markerOptions) // Agreg
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+                            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+                            googleMap?.uiSettings?.isZoomGesturesEnabled = true
+
                         }
                     }
 
