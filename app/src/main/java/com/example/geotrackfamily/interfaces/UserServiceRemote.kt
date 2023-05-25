@@ -1,9 +1,6 @@
 package com.example.geotrackfamily.interfaces
 
-import com.example.geotrackfamily.models.Health
-import com.example.geotrackfamily.models.LocationUser
-import com.example.geotrackfamily.models.User
-import com.example.geotrackfamily.models.shortUser
+import com.example.geotrackfamily.models.*
 import com.example.geotrackfamily.utility.Utils
 import com.google.gson.annotations.SerializedName
 import retrofit2.http.Body
@@ -38,6 +35,8 @@ interface UserServiceRemote {
     @POST(Utils.update_token)
     suspend fun updateToken (@Body requestBody: Map<String,String>): retrofit2.Response<UserShortResponseApi>
 
+    @POST(Utils.fetch_notifi_by_user)
+    suspend fun fetchNotificationByUser (@Body requestBody: Map<String,String>): retrofit2.Response<NotificationResponseApi>
 
 }
 class UserResponseApi {
@@ -58,3 +57,9 @@ class LocationResponseApi {
     @SerializedName("location_user") var location_user: LocationUser = LocationUser()
     @SerializedName("message") var message: String = ""
 }
+
+class NotificationResponseApi {
+    @SerializedName("notifications") var notifications: ArrayList<Notification> = arrayListOf()
+    @SerializedName("message") var message: String = ""
+}
+

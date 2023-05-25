@@ -2,6 +2,7 @@ package com.example.geotrackfamily.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.geotrackfamily.models.Notification
 import com.example.geotrackfamily.models.User
 import com.example.geotrackfamily.models.shortUser
 import com.example.geotrackfamily.repository.UserRepository
@@ -24,6 +25,10 @@ class UserViewModel  @Inject constructor(
 
     private val _compositionUpdateUser = MutableStateFlow<Result<CompositionObj<shortUser,String>>>(Result.Empty)
     val compositionUpdateUser :  StateFlow<Result<CompositionObj<shortUser,String>>> = _compositionUpdateUser
+
+    private val _compositionNotifications = MutableStateFlow<Result<CompositionObj<ArrayList<Notification>,String>>>(Result.Empty)
+    val compositionNotifications :  StateFlow<Result<CompositionObj<ArrayList<Notification>,String>>> = _compositionNotifications
+
 
     private val _loadingProgress = MutableStateFlow(false)
     val loadingProgress: StateFlow<Boolean> = _loadingProgress
@@ -55,6 +60,13 @@ class UserViewModel  @Inject constructor(
 
     fun update_token(user_id: String, token: String) = viewModelScope.launch (Dispatchers.IO) {
         userRepository.update_token(user_id = user_id, token = token)
+    }
+
+    fun fetc_notificatio_by_user(user_id: String) = viewModelScope.launch (Dispatchers.IO) {
+        _compositionNotifications.value = Result.Empty
+        _loadingProgress.value = true
+        _compositionNotifications.value = userRepository.fetc_notificatio_by_user(user_id = user_id)
+        _loadingProgress.value = false
     }
 
 

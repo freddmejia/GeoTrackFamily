@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/geozone_alert_title"
-            style="@style/bold_medium"
+            style="@style/normal_medium"
             android:layout_marginBottom="15sp"
             android:maxLines="3"
             android:ellipsize="end"

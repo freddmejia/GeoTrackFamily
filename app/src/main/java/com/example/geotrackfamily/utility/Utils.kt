@@ -26,7 +26,8 @@ class Utils {
         const val update_password_step_last = "$api_version/update_password_step_last"
         const val save_location = "$api_version/save_location"
         const val update_token = "$api_version/update_token"
-
+        const val fetch_notifi_by_user = "$api_version/fetch_notifi_by_user"
+        const val delete_notification = "$api_version/delete_notification"
 
         //friends
         const val fetch_possible_friends = "$api_version/fetch_possible_friends"

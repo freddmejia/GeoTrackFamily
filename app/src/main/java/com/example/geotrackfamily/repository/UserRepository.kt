@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.geotrackfamily.datasources.UserRemoteDataSource
 import com.example.geotrackfamily.interfaces.UserServiceRemote
 import com.example.geotrackfamily.models.LocationUser
+import com.example.geotrackfamily.models.Notification
 import com.example.geotrackfamily.models.User
 import com.example.geotrackfamily.models.shortUser
 import com.example.geotrackfamily.utility.CompositionObj
@@ -131,5 +132,24 @@ class UserRepository  @Inject constructor(
         }
     }
 
+    suspend fun fetc_notificatio_by_user(user_id: String): Result<CompositionObj<ArrayList<Notification>, String>> {
+        return withContext(Dispatchers.Default){
+            try {
+                val requestBody: MutableMap<String, String> = HashMap()
+                requestBody["user_id"] = user_id
+                val response = userRemoteDataSource.fetchNotificationByUser(requestBody = requestBody)
+                val body = response.body()
+                if (body != null) {
+                    val ab = CompositionObj(response.body()!!.notifications, response.body()!!.message)
+                    Result.Success(ab)
+                }
+                else{
+                    errorResult( message = "",errorBody = response.errorBody()!!)
+                }
+            }catch (e: Exception){
+                errorResult(message = e.message ?: e.toString())
+            }
+        }
+    }
 
 }

@@ -194,10 +194,6 @@ class HomeFragment : Fragment(R.layout.home_fragment), UIObserverGeneric<Friend>
                                 )
                         )
 
-                        //Result<CompositionObj<ArrayList<Friend>, String>>
-
-                        Log.e("com", "coroutines12: "+tmp_friendsList.joinToString { it.id.toString() } )
-
                         showToast(message = result.data.message)
 
                     }

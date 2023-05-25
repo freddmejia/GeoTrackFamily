@@ -310,8 +310,6 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
 
 
         if (currentLocation != null){
-            Log.e(TAG, "onMapReady: 1111")
-            //val initialLocation = LatLng(37.7749, -122.4194)
             val initialLocation = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
             val cameraPosition = CameraPosition.Builder().target(initialLocation).zoom(10f).build()
             googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))

@@ -185,6 +185,7 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
         webSocket = client.newWebSocket(request, object : WebSocketListener(){
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 super.onOpen(webSocket, response)
+                Log.e("", "onOpen: websocket", )
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
@@ -211,10 +212,12 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
 
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 super.onClosed(webSocket, code, reason)
+                Log.e("", "onClosed: ", )
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 super.onFailure(webSocket, t, response)
+                Log.e("", "onFailure: ", )
             }
         })
 

@@ -29,7 +29,7 @@
     <string name="cancel">cancelar</string>
     <string name="accept">Aceptar</string>
     <string name="user_name">Escribe tu nombre</string>
-    <string name="geozone_alert_title">Quieres guardar esta gezona para: </string>
+    <string name="geozone_alert_title">Quieres guardar esta geozona para: </string>
     <string name="geofences_friend">Geofences</string>
     <string name="geofences_friend_lat">Lat.</string>
     <string name="geofences_friend_long">Long.</string>
