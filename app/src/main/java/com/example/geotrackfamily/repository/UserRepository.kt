@@ -109,4 +109,27 @@ class UserRepository  @Inject constructor(
             }
         }
     }
+
+    suspend fun update_token(user_id: String, token: String): Result<CompositionObj<shortUser, String>> {
+        return withContext(Dispatchers.Default){
+            try {
+                val requestBody: MutableMap<String, String> = HashMap()
+                requestBody["user_id"] = user_id
+                requestBody["token"] = token
+                val response = userRemoteDataSource.updateToken(requestBody = requestBody)
+                val body = response.body()
+                if (body != null) {
+                    val ab = CompositionObj(response.body()!!.user, response.body()!!.message)
+                    Result.Success(ab)
+                }
+                else{
+                    errorResult( message = "",errorBody = response.errorBody()!!)
+                }
+            }catch (e: Exception){
+                errorResult(message = e.message ?: e.toString())
+            }
+        }
+    }
+
+
 }

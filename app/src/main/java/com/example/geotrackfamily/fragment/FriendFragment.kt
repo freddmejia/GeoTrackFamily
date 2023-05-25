@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +16,7 @@ import com.example.geotrackfamily.adapter.FriendsZoneAdapter
 import com.example.geotrackfamily.databinding.FriendFragmentBinding
 import com.example.geotrackfamily.databinding.HomeFragmentBinding
 import com.example.geotrackfamily.models.Friend
+import com.example.geotrackfamily.models.LocationUser
 import com.example.geotrackfamily.models.User
 import com.example.geotrackfamily.observer.UIObserverGeneric
 import com.example.geotrackfamily.utility.CompositionObj
@@ -45,6 +47,7 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
     private lateinit var webSocket: WebSocket
     private lateinit var client: OkHttpClient
     private lateinit var friendCh: Friend
+    private lateinit var toast: Toast
     companion object{
         fun newInstance(): FriendFragment {
             return FriendFragment()
@@ -55,6 +58,7 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
         val friendFragmenBinding = FriendFragmentBinding.bind(view)
         binding = friendFragmenBinding!!
 
+        toast = Toast(this@FriendFragment.requireContext())
         friendsList = arrayListOf()
         tempFriendsList = arrayListOf()
         friendsZoneAdapter = FriendsZoneAdapter(this@FriendFragment.requireContext(), friendsList,this@FriendFragment)
@@ -113,6 +117,22 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
                 }
             }
         }
+        lifecycleScope.launchWhenCreated {
+            friendViewModel.compositionLocationFriend.collect { result->
+                when(result) {
+                    is com.example.geotrackfamily.utility.Result.Success<CompositionObj<LocationUser,String>> -> {
+                        val latitude = result.data.data.latitude.toDouble()
+                        val longitude = result.data.data.longitude.toDouble()
+                        showUbicationFriend(latitude = latitude, longitude = longitude)
+                    }
+                    is com.example.geotrackfamily.utility.Result.Error-> {
+                        showToast(message = result.error)
+                    }
+                    else -> Unit
+                }
+
+            }
+        }
 
 
     }
@@ -125,6 +145,7 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
 
     override fun onOkButton(data: Friend) {
         friendCh = data
+        friendViewModel.fetch_last_locationUser(user_id = data.id.toString())
         Log.e("", "onOkButton: "+data.id.toString())
         var jsn = JSONObject()
         jsn.put("user_id",friendCh.id.toString())
@@ -175,19 +196,7 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
                     if (friendCh.id > 0 && friendCh.id == locationJson.getInt("user_id")) {
                         val latitude = locationJson.getString("latitude").toDouble()
                         val longitude = locationJson.getString("longitude").toDouble()
-                        activity?.runOnUiThread {
-                            googleMap?.clear()
-                            val latLng = LatLng(latitude, longitude)
-                            val markerOptions = MarkerOptions()
-                                .position(latLng) // LatLng de la ubicación
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ubication_icon)) // Ícono personalizado
-                                .title("Ubication")
-
-                            googleMap?.addMarker(markerOptions) // Agreg
-                            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-                            googleMap?.uiSettings?.isZoomGesturesEnabled = true
-
-                        }
+                        showUbicationFriend(latitude = latitude, longitude = longitude)
                     }
 
                 }catch (e: java.lang.Exception){
@@ -219,5 +228,27 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
             e.printStackTrace()
         }
 
+    }
+
+    fun showToast(message: String){
+        toast?.cancel()
+        toast = Toast.makeText(this@FriendFragment.context,message, Toast.LENGTH_LONG)
+        toast.show()
+    }
+
+    fun showUbicationFriend (latitude: Double, longitude: Double) {
+        activity?.runOnUiThread {
+            googleMap?.clear()
+            val latLng = LatLng(latitude, longitude)
+            val markerOptions = MarkerOptions()
+                .position(latLng) // LatLng de la ubicación
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ubication_icon)) // Ícono personalizado
+                .title("Ubication")
+
+            googleMap?.addMarker(markerOptions) // Agreg
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+            googleMap?.uiSettings?.isZoomGesturesEnabled = true
+
+        }
     }
 }

@@ -53,4 +53,9 @@ class UserViewModel  @Inject constructor(
         userRepository.save_location(user_id = user_id, latitude = latitude, longitude = longitude)
     }
 
+    fun update_token(user_id: String, token: String) = viewModelScope.launch (Dispatchers.IO) {
+        userRepository.update_token(user_id = user_id, token = token)
+    }
+
+
 }

@@ -25,6 +25,7 @@ class Utils {
         const val forgot_password_step_one = "$api_version/forgot_password_step_one"
         const val update_password_step_last = "$api_version/update_password_step_last"
         const val save_location = "$api_version/save_location"
+        const val update_token = "$api_version/update_token"
 
 
         //friends
@@ -39,6 +40,8 @@ class Utils {
         const val update_geofence_friend = "$api_version/update_geofence_friend"
         const val fetch_geofence_byfriend = "$api_version/fetch_geofence_byfriend"
         const val delete_geofence_byfriend = "$api_version/delete_geofence_byfriend"
+        const val fetch_last_location_user = "$api_version/fetch_last_location_user"
+
 
         const val friend_added = 1
         const val are_friend = 2

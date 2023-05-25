@@ -1,10 +1,12 @@
 package com.example.geotrackfamily
 
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -18,6 +20,7 @@ import com.example.geotrackfamily.models.Friend
 import com.example.geotrackfamily.models.User
 import com.example.geotrackfamily.models.shortUser
 import com.example.geotrackfamily.utility.CompositionObj
+import com.example.geotrackfamily.utility.LocationService
 import com.example.geotrackfamily.viewModels.FriendViewModel
 import com.example.geotrackfamily.viewModels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +34,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var toast: Toast
     private lateinit var toolbarAppBinding: ToolbarAppBinding
     private lateinit var sharedPref: SharedPreferences
-
+    private var isEnableLocation = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
@@ -47,10 +50,12 @@ class ProfileActivity : AppCompatActivity() {
         }catch (e: java.lang.Exception){
             logoutUser()
         }
-
+        isEnableLocation = false
 
         binding.etEmail.setText(user.email)
         binding.etName.setText(user.name)
+
+        setTitleLocationEnable()
         events()
         coroutines()
     }
@@ -100,6 +105,12 @@ class ProfileActivity : AppCompatActivity() {
         }
         binding.cvLogout.setOnClickListener {
             logoutUser()
+        }
+
+        binding.cvEnableLocation.setOnClickListener {
+            isEnableLocation = !isEnableLocation
+            isLocationRunning(isLocationRunning = isEnableLocation)
+            setTitleLocationEnable()
         }
     }
 
@@ -153,10 +164,67 @@ class ProfileActivity : AppCompatActivity() {
         editor.remove("user")
         editor.remove("token")
         editor.remove("islogged")
+        editor.remove("isLocationRunning")
+        editor.remove("isControlByUser")
         editor.apply()
         startActivity(
             Intent(this@ProfileActivity, MainActivity::class.java)
         )
         finish()
     }
+
+    fun isLocationRunning(isLocationRunning: Boolean) {
+        with(sharedPref?.edit()){
+            this?.putBoolean("isLocationRunning",isLocationRunning)
+            this?.putBoolean("isControlByUser", true)
+            this?.apply()
+        }
+    }
+
+    fun getIsLocationRunning() = sharedPref!!.getBoolean("isLocationRunning",false)
+
+    override fun onResume() {
+        super.onResume()
+        //isEnableLocation = getIsLocationRunning()
+    }
+
+    fun setTitleLocationEnable() {
+        binding.tvlocation.setText(resources.getString(R.string.enable_location))
+        isEnableLocation = getIsLocationRunning()
+
+        if (isEnableLocation) {
+            binding.tvlocation.setText(resources.getString(R.string.disable_location))
+        }
+        initServiceLocation()
+    }
+
+    fun initServiceLocation() {
+        try {
+            val intent = Intent(this, LocationService::class.java)
+            if (isEnableLocation){
+                if (isServiceNotRunning(LocationService::class.java)) {
+                    startService(intent)
+                }
+            }else{
+                stopService(intent)
+            }
+
+        }catch (e: java.lang.Exception){
+            isLocationRunning(isLocationRunning = false)
+            Log.e("", "initServiceLocation: "+e.message.toString() )
+        }
+    }
+
+    private fun isServiceNotRunning(serviceClass: Class<*>): Boolean {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+
+        for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return false
+            }
+        }
+
+        return true
+    }
+
 }

@@ -34,6 +34,11 @@
     <string name="geofences_friend_lat">Lat.</string>
     <string name="geofences_friend_long">Long.</string>
     <string name="ask_permission_location">Habilita el permiso de ubicacion</string>
+    <string name="ask_permission_notification">Habilita el permiso de notificaciones</string>
+    <string name="enable_location">Habilitar ubicación</string>
+    <string name="disable_location">Deshabilitar ubicación</string>
+    <string name="track_friend">Rastrea un amigo</string>
+    <string name="geozone_friend">Geofences amigo</string>
     <!-- errors -->
     <string name="error_fill_user">LLena el nombre y el email</string>
     <string name="error_fill">LLena todos los campos</string>

@@ -161,6 +161,17 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
             }
         }
 
+        lifecycleScope.launchWhenCreated {
+            friendViewModel.compositionGeofenceFriend.collect { result ->
+                when(result){
+                    is com.example.geotrackfamily.utility.Result.Success<CompositionObj<GeofenceFriend, String>> ->
+                        showToast(message = result.data.message)
+                    is com.example.geotrackfamily.utility.Result.Error ->
+                        showToast(message = result.error)
+                    else -> Unit
+                }
+            }
+        }
 
     }
 

@@ -133,6 +133,25 @@
                 android:paddingVertical="7sp"/>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvEnableLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/orange_3c"
+            android:layout_marginHorizontal="15sp"
+            app:cardCornerRadius="10sp"
+            android:layout_marginBottom="15sp"
+            >
+            <TextView
+                android:id="@+id/tvlocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/enable_location"
+                style="@style/bold_large"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:paddingVertical="7sp"/>
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

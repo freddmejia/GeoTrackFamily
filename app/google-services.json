@@ -1,62 +1,33 @@
 {
   "project_info": {
-    "project_number": "299781459091",
-    "project_id": "wearabletfm",
-    "storage_bucket": "wearabletfm.appspot.com"
+    "project_number": "200315497494",
+    "project_id": "geotrackfamily-8a14a",
+    "storage_bucket": "geotrackfamily-8a14a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:299781459091:android:2935180b3aeb884c969166",
+        "mobilesdk_app_id": "1:200315497494:android:141ee2c964a3c7c7df9937",
         "android_client_info": {
           "package_name": "com.example.geotrackfamily"
         }
       },
       "oauth_client": [
         {
-          "client_id": "299781459091-k681u9l1150v8nup8o8s1008b6pu6bn9.apps.googleusercontent.com",
+          "client_id": "200315497494-47m9r0te1mttq3vfkvu2et04h3iba4mk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBN6UTXN5wWXLSDx-lI-HkkGUaIZxJ8VHk"
+          "current_key": "AIzaSyBfukJ8jmc5E6XnoiUBEXY-KOmfhWlUYQQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "299781459091-k681u9l1150v8nup8o8s1008b6pu6bn9.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:299781459091:android:974a63b395607111969166",
-        "android_client_info": {
-          "package_name": "tm.wearable.wearabletfm"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "299781459091-k681u9l1150v8nup8o8s1008b6pu6bn9.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBN6UTXN5wWXLSDx-lI-HkkGUaIZxJ8VHk"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "299781459091-k681u9l1150v8nup8o8s1008b6pu6bn9.apps.googleusercontent.com",
+              "client_id": "200315497494-47m9r0te1mttq3vfkvu2et04h3iba4mk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

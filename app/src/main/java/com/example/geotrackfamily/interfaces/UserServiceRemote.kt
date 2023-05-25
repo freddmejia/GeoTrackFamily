@@ -35,6 +35,10 @@ interface UserServiceRemote {
     @POST(Utils.save_location)
     suspend fun saveLocation (@Body requestBody: Map<String,String>): retrofit2.Response<LocationResponseApi>
 
+    @POST(Utils.update_token)
+    suspend fun updateToken (@Body requestBody: Map<String,String>): retrofit2.Response<UserShortResponseApi>
+
+
 }
 class UserResponseApi {
     @SerializedName("user") var user: User = User()

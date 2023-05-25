@@ -3,6 +3,7 @@ package com.example.geotrackfamily.interfaces
 import com.example.geotrackfamily.models.Friend
 import com.example.geotrackfamily.models.FriendRequest
 import com.example.geotrackfamily.models.GeofenceFriend
+import com.example.geotrackfamily.models.LocationUser
 import com.example.geotrackfamily.utility.Utils
 import com.google.gson.annotations.SerializedName
 import retrofit2.http.Body
@@ -42,6 +43,10 @@ interface FriendServiceRemote {
     @POST(Utils.delete_geofence_byfriend)
     suspend fun deleteFriendGeofence(@Body requestBody: Map<String,String>): retrofit2.Response<GeofenceFriendResponseApi>
 
+    @POST(Utils.fetch_last_location_user)
+    suspend fun fetchLastLocationUser(@Body requestBody: Map<String,String>): retrofit2.Response<LocationFriendResponseApi>
+
+
 }
 class PossFriendResponseApi {
     @SerializedName("possible_friends") var poss_friends: ArrayList<Friend> = arrayListOf()
@@ -73,3 +78,7 @@ class GeofencesFriendResponseApi {
     @SerializedName("message") var message: String = ""
 }
 
+class LocationFriendResponseApi {
+    @SerializedName("location") var location: LocationUser = LocationUser()
+    @SerializedName("message") var message: String = ""
+}

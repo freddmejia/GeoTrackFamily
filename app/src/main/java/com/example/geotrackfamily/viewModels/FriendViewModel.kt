@@ -27,7 +27,6 @@ class FriendViewModel @Inject constructor(
     private val _compositionFetchPossibleFriends = MutableStateFlow<Result<CompositionObj<ArrayList<Friend>, String>>>(Result.Empty)
     val compositionFetchPossibleFriends : StateFlow<Result<CompositionObj<ArrayList<Friend>, String>>> = _compositionFetchPossibleFriends
 
-
     private val _compositionFetchFriends = MutableStateFlow<Result<CompositionObj<ArrayList<shortUser>, String>>>(Result.Empty)
     val compositionFetchFriends : StateFlow<Result<CompositionObj<ArrayList<shortUser>, String>>> = _compositionFetchFriends
 
@@ -39,6 +38,9 @@ class FriendViewModel @Inject constructor(
 
     private val _compositionGeofenceFriend = MutableStateFlow<Result<CompositionObj<GeofenceFriend, String>>>(Result.Empty)
     val compositionGeofenceFriend : StateFlow<Result<CompositionObj<GeofenceFriend, String>>> = _compositionGeofenceFriend
+
+    private val _compositionLocationFriend = MutableStateFlow<Result<CompositionObj<LocationUser, String>>>(Result.Empty)
+    val compositionLocationFriend : StateFlow<Result<CompositionObj<LocationUser, String>>> = _compositionLocationFriend
 
 
     private val _loadingProgress = MutableStateFlow(false)
@@ -139,6 +141,14 @@ class FriendViewModel @Inject constructor(
         _compositionGeofenceFriend.value = friendRepository.delete_geofence_byfriend(geofenceId = geofenceId)
         _loadingProgress.value = false
     }
+
+    fun fetch_last_locationUser(user_id: String) = viewModelScope.launch {
+        _compositionLocationFriend.value = Result.Empty
+        _loadingProgress.value = true
+        _compositionLocationFriend.value = friendRepository.fetchLastLocationUser(user_id = user_id)
+        _loadingProgress.value = false
+    }
+
 
 
 

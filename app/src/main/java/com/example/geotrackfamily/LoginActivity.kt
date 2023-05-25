@@ -88,9 +88,10 @@ class LoginActivity : AppCompatActivity() {
                             this?.putBoolean("islogged",true)
                             this?.apply()
                         }
-                        finish()
+                        val inttent = Intent(this@LoginActivity, MainAppActivity::class.java)
+                        inttent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(
-                            Intent(this@LoginActivity, MainAppActivity::class.java)
+                            inttent
                         )
                     }
                     is  Result.Error -> {

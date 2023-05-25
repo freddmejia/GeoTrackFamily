@@ -213,4 +213,25 @@ class FriendRepository @Inject constructor(
             }
         }
     }
+
+    suspend fun fetchLastLocationUser(user_id: String): Result<CompositionObj<LocationUser, String>> {
+        return withContext(Dispatchers.Default){
+            try {
+                val requestBody: MutableMap<String, String> = HashMap()
+                requestBody["user_id"] = user_id
+                val response = friendRemoteDataSource.fetchLastLocationUser(requestBody = requestBody)
+                val body = response.body()
+                if (body != null) {
+                    val ab = CompositionObj(response.body()!!.location, response.body()!!.message)
+                    Result.Success(ab)
+                }
+                else{
+                    Utils.errorResult( message = "",errorBody = response.errorBody()!!)
+                }
+            }catch (e: Exception){
+                Utils.errorResult(message = e.message ?: e.toString())
+            }
+        }
+    }
+
 }

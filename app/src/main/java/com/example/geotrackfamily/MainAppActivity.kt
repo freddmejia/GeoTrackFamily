@@ -2,16 +2,20 @@ package com.example.geotrackfamily
 
 import android.Manifest
 import android.app.ActivityManager
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.PorterDuff
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -24,9 +28,18 @@ import com.example.geotrackfamily.databinding.ToolbarAppBinding
 import com.example.geotrackfamily.fragment.FriendFragment
 import com.example.geotrackfamily.fragment.HomeFragment
 import com.example.geotrackfamily.fragment.ZoneFragment
+import com.example.geotrackfamily.models.User
 import com.example.geotrackfamily.utility.LocationService
 import com.example.geotrackfamily.utility.Utils
+import com.example.geotrackfamily.viewModels.UserViewModel
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONObject
+import android.provider.Settings
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.NotificationManagerCompat
 
 @AndroidEntryPoint
 class MainAppActivity : AppCompatActivity() {
@@ -34,6 +47,11 @@ class MainAppActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainAppBinding
     private lateinit var toolbarAppBinding: ToolbarAppBinding
     private lateinit var bottomBarBinding: BottomBarBinding
+    private val userViewModel: UserViewModel by viewModels()
+    private lateinit var user: User
+    private lateinit var sharedPref: SharedPreferences
+    private val NOTIFICATION_PERMISSION_REQUEST_CODE = 1001
+    private lateinit var toast: Toast
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainAppBinding.inflate(layoutInflater)
@@ -43,8 +61,26 @@ class MainAppActivity : AppCompatActivity() {
         bottomBarBinding = BottomBarBinding.bind(binding.root)
         setSupportActionBar(toolbarAppBinding.toolbar)
 
-        events()
+
         chooseSelectionMenu(fragment = HomeFragment.newInstance())
+
+        toast = Toast(this)
+
+        sharedPref = this@MainAppActivity.getSharedPreferences(
+            getString(R.string.shared_preferences), Context.MODE_PRIVATE)
+
+        try {
+            user = User(JSONObject(sharedPref!!.getString("user","")))
+            getTokenFirebase(user = user)
+        }catch (e: java.lang.Exception){
+            e.printStackTrace()
+        }
+
+        askPermissions()
+        events()
+    }
+
+    fun askPermissions() {
 
         if ((ContextCompat.checkSelfPermission(applicationContext,
                 Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -53,6 +89,13 @@ class MainAppActivity : AppCompatActivity() {
         }
         else{
             initServiceLocation()
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+                // Notifications are disabled, request the user to enable them
+                permissionNotification()
+            }
         }
     }
 
@@ -89,8 +132,6 @@ class MainAppActivity : AppCompatActivity() {
     }
 
     fun chooseSelectionMenu(fragment: Fragment){
-
-
         when(fragment){
             is HomeFragment -> {
                 appeareance(
@@ -113,9 +154,7 @@ class MainAppActivity : AppCompatActivity() {
                     colorCv = R.color.white,
                     colorIm = R.color.black
                 )
-                //bottomBarBinding.cvHome.setCardBackgroundColor(ContextCompat.getColor(this, R.color.green_b1))
-                //bottomBarBinding.imHome.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_IN)
-
+                toolbarAppBinding.titleBar.setText(resources.getString(R.string.my_friends))
             }
             is FriendFragment -> {
                 appeareance(
@@ -138,7 +177,7 @@ class MainAppActivity : AppCompatActivity() {
                     colorCv = R.color.white,
                     colorIm = R.color.black
                 )
-
+                toolbarAppBinding.titleBar.setText(resources.getString(R.string.track_friend))
             }
             is ZoneFragment -> {
                 appeareance(
@@ -161,9 +200,7 @@ class MainAppActivity : AppCompatActivity() {
                     colorCv = R.color.white,
                     colorIm = R.color.black
                 )
-                //bottomBarBinding.cvZone.setCardBackgroundColor(ContextCompat.getColor(this, R.color.green_b1))
-                //bottomBarBinding.imZone.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_IN)
-
+                toolbarAppBinding.titleBar.setText(resources.getString(R.string.geozone_friend))
             }
         }
         supportFragmentManager.commit {
@@ -191,7 +228,6 @@ class MainAppActivity : AppCompatActivity() {
                 return false
             }
         }
-
         return true
     }
 
@@ -219,11 +255,63 @@ class MainAppActivity : AppCompatActivity() {
         try {
             val intent = Intent(this, LocationService::class.java)
             if (isServiceNotRunning(LocationService::class.java)) {
-                startService(intent)
+                if (!getLocationControlByUser() || getLocationRunning()){
+                    startService(intent)
+                    isLocationRunning(isLocationRunning = true)
+                }
             }
         }catch (e: java.lang.Exception){
-            Log.e(TAG, "initServiceLocation: "+e.message.toString() )
+            isLocationRunning(isLocationRunning = false)
         }
     }
 
+    fun getTokenFirebase(user: User) {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
+            }
+            val token = task.result
+            userViewModel.update_token(user_id = user.id.toString(), token = token)
+        })
+    }
+
+    fun isLocationRunning(isLocationRunning: Boolean) {
+        with(sharedPref?.edit()){
+            this?.putBoolean("isLocationRunning",isLocationRunning)
+            this?.apply()
+        }
+    }
+    fun getLocationRunning() = sharedPref!!.getBoolean("isLocationRunning",false)
+    //this function works the first time to get location, because the user cant click on button to control that
+    fun getLocationControlByUser() = sharedPref!!.getBoolean("isControlByUser",false)
+
+    fun permissionNotification() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                .putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+            startActivityForResult(intent, NOTIFICATION_PERMISSION_REQUEST_CODE)
+        }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            // Check if the user granted notification permission after the request
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+                    // Notification permission granted
+                    // Continue with your app logic here
+                } else {
+                    showToast(message = resources.getString(R.string.ask_permission_notification))
+                    // Notification permission not granted
+                    // You can show a message to the user or take any additional action if desired
+                }
+            }
+        }
+    }
+
+    fun showToast(message: String){
+        toast?.cancel()
+        toast = Toast.makeText(this@MainAppActivity,message, Toast.LENGTH_LONG)
+        toast.show()
+    }
 }

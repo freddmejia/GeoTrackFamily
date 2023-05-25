@@ -50,6 +50,7 @@ class HomeFragment : Fragment(R.layout.home_fragment), UIObserverGeneric<Friend>
             return HomeFragment()
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val homeFragmentBinding = HomeFragmentBinding.bind(view)
