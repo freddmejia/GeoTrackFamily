@@ -9,10 +9,12 @@ class Friend (
     var token_firebase: String? = null,
     var image: String? = null,
     var code_qr: String? = null,
+    var hour_start: String = "00:00:00",
+    var hour_end: String = "00:00:00",
     var is_friend: Int,
     var is_choosed: Boolean = false
 ) {
-    constructor() : this(0,"","","","","",0,false)
+    constructor() : this(0,"","","","","","","",0,false)
 }
 
 class FriendRequest (

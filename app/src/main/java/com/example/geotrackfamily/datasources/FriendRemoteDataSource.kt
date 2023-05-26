@@ -18,5 +18,6 @@ class FriendRemoteDataSource @Inject constructor(
     suspend fun fetchFriendGeofence(requestBody: MutableMap<String, String>) = friendService.fetchFriendGeofence(requestBody)
     suspend fun deleteFriendGeofence(requestBody: MutableMap<String, String>) = friendService.deleteFriendGeofence(requestBody)
     suspend fun fetchLastLocationUser(requestBody: MutableMap<String, String>) = friendService.fetchLastLocationUser(requestBody)
+    suspend fun updateTimeLocation(requestBody: MutableMap<String, String>) = friendService.updateTimeLocation(requestBody)
 
 }

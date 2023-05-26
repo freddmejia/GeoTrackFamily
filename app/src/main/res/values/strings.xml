@@ -40,6 +40,11 @@
     <string name="track_friend">Rastrea un amigo</string>
     <string name="geozone_friend">Geofences amigo</string>
     <string name="notifications">Notificaciones</string>
+    <string name="location_time_friend_shorta">Define el horario que </string>
+    <string name="location_time_friend_shortb">va a ver tu ubicación</string>
+    <string name="time_start">Hora inicio</string>
+    <string name="time_end">Hora fin</string>
+
     <!-- errors -->
     <string name="error_fill_user">LLena el nombre y el email</string>
     <string name="error_fill">LLena todos los campos</string>
@@ -47,4 +52,5 @@
     <string name="error_data">Hay datos</string>
     <string name="error_password_not_same">Las contraseñas no coinciden</string>
     <string name="error_not_enable_gps">Habilita gps para continuar</string>
+    <string name="error_time">Hora start debe ser menor a la hora fin</string>
 </resources>

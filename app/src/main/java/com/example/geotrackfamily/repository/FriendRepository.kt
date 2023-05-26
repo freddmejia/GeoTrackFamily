@@ -234,4 +234,28 @@ class FriendRepository @Inject constructor(
         }
     }
 
+    suspend fun updateTimeLocation(user_id1: String,user_id2: String,hour_start: String,hour_end: String): Result<CompositionObj<Friend, String>> {
+        return withContext(Dispatchers.Default){
+            try {
+                val requestBody: MutableMap<String, String> = HashMap()
+                requestBody["user_id1"] = user_id1
+                requestBody["user_id2"] = user_id2
+                requestBody["hour_start"] = hour_start
+                requestBody["hour_end"] = hour_end
+                val response = friendRemoteDataSource.updateTimeLocation(requestBody = requestBody)
+                val body = response.body()
+                if (body != null) {
+                    val ab = CompositionObj(response.body()!!.friend_update, response.body()!!.message)
+                    Result.Success(ab)
+                }
+                else{
+                    Utils.errorResult( message = "",errorBody = response.errorBody()!!)
+                }
+            }catch (e: Exception){
+                Utils.errorResult(message = e.message ?: e.toString())
+            }
+        }
+    }
+
+
 }

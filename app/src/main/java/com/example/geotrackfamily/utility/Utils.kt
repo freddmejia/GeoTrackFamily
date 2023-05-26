@@ -7,6 +7,9 @@ import android.content.Context
 import androidx.core.app.ActivityCompat
 import okhttp3.ResponseBody
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class Utils {
     companion object{
@@ -42,6 +45,7 @@ class Utils {
         const val fetch_geofence_byfriend = "$api_version/fetch_geofence_byfriend"
         const val delete_geofence_byfriend = "$api_version/delete_geofence_byfriend"
         const val fetch_last_location_user = "$api_version/fetch_last_location_user"
+        const val update_time_location = "$api_version/update_time_location"
 
 
         const val friend_added = 1
@@ -75,5 +79,14 @@ class Utils {
                 dialog.show()
             }
         }
+
+        fun isHora1Greater(hora1: String, hora2: String): Boolean {
+            val format = SimpleDateFormat("HH:mm:ss")
+            val time1 = format.parse(hora1)
+            val time2 = format.parse(hora2)
+
+            return time1.after(time2)
+        }
+
     }
 }

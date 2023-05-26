@@ -26,6 +26,7 @@ import com.example.geotrackfamily.models.FriendRequest
 import com.example.geotrackfamily.models.User
 import com.example.geotrackfamily.observer.UIObserverFriendRequest
 import com.example.geotrackfamily.observer.UIObserverGeneric
+import com.example.geotrackfamily.observer.UIObserverLocationFriend
 import com.example.geotrackfamily.utility.CompositionObj
 import com.example.geotrackfamily.utility.Utils
 import com.example.geotrackfamily.viewModels.FriendViewModel
@@ -34,7 +35,7 @@ import kotlin.math.log
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.home_fragment), UIObserverGeneric<Friend>,
-    UIObserverFriendRequest {
+    UIObserverFriendRequest, UIObserverLocationFriend {
     private var binding: HomeFragmentBinding ? = null
     private val friendViewModel: FriendViewModel by viewModels()
     private lateinit var toast: Toast
@@ -64,7 +65,7 @@ class HomeFragment : Fragment(R.layout.home_fragment), UIObserverGeneric<Friend>
             Context.MODE_PRIVATE
         )
         user = User(JSONObject(prefsUser!!.getString("user","")))
-        friendAdded = Friend(0,"","","","","",0)
+        friendAdded = Friend()
         friendsAdapter = FriendsAdapter(this@HomeFragment.requireContext(), list = arrayListOf(), this)
         binding?.rvMyFriends?.layoutManager = LinearLayoutManager(this@HomeFragment.requireContext())
         binding?.rvMyFriends?.adapter = friendsAdapter
@@ -204,6 +205,18 @@ class HomeFragment : Fragment(R.layout.home_fragment), UIObserverGeneric<Friend>
                 }
             }
         }
+
+        lifecycleScope.launchWhenCreated {
+            friendViewModel.compositionFriend.collect { result ->
+                when(result) {
+                    is com.example.geotrackfamily.utility.Result.Success<CompositionObj<Friend, String>> ->
+                        showToast(message = result.data.message)
+                    is com.example.geotrackfamily.utility.Result.Error ->
+                        showToast(message = result.error)
+                    else -> Unit
+                }
+            }
+        }
     }
 
     fun showToast(message: String){
@@ -223,7 +236,10 @@ class HomeFragment : Fragment(R.layout.home_fragment), UIObserverGeneric<Friend>
     }
 
     override fun onOkButton(data: Friend) {
-
+        GeoDialogs.update_hour_location_friend(
+            friend =  data,
+            context = this@HomeFragment.requireContext(),
+            observer = this@HomeFragment)
     }
 
     override fun onCancelButton(data: Friend) {
@@ -240,8 +256,17 @@ class HomeFragment : Fragment(R.layout.home_fragment), UIObserverGeneric<Friend>
     }
 
     override fun onCancelFriend(friend: Friend) {
-        friendAdded = Friend(0,"","","","","",0)
+        friendAdded = Friend()
         acceptOrDeleteFriend = Utils.are_friend
         friendViewModel.delete_friend_request(user_id1 = friend.id.toString(), user_id2 = user.id.toString())
+    }
+
+    override fun update(friend: Friend) {
+        friendViewModel.updateTimeLocation(
+            user_id1 = user.id.toString(),
+            user_id2 = friend.id.toString(),
+            hour_start = friend.hour_start,
+            hour_end = friend.hour_end
+        )
     }
 }

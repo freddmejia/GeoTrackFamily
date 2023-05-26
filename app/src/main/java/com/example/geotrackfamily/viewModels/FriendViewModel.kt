@@ -49,6 +49,9 @@ class FriendViewModel @Inject constructor(
     private val _compositionFriendRequest = MutableStateFlow<Result<CompositionObj<FriendRequest, String>>>(Result.Empty)
     val compositionFriendRequest : StateFlow<Result<CompositionObj<FriendRequest, String>>> = _compositionFriendRequest
 
+    private val _compositionFriend = MutableStateFlow<Result<CompositionObj<Friend, String>>>(Result.Empty)
+    val compositionFriend : StateFlow<Result<CompositionObj<Friend, String>>> = _compositionFriend
+
 
     fun setInputText(inputText: String) {
         inputTextFlow.value = inputText
@@ -149,6 +152,12 @@ class FriendViewModel @Inject constructor(
         _loadingProgress.value = false
     }
 
+    fun updateTimeLocation(user_id1: String,user_id2: String,hour_start: String,hour_end: String) = viewModelScope.launch {
+        _compositionFriend.value = Result.Empty
+        _loadingProgress.value = true
+        _compositionFriend.value = friendRepository.updateTimeLocation(user_id1 = user_id1, user_id2 = user_id2, hour_start = hour_start, hour_end = hour_end)
+        _loadingProgress.value = false
+    }
 
 
 

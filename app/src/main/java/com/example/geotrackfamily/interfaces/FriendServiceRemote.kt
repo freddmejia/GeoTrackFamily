@@ -46,6 +46,8 @@ interface FriendServiceRemote {
     @POST(Utils.fetch_last_location_user)
     suspend fun fetchLastLocationUser(@Body requestBody: Map<String,String>): retrofit2.Response<LocationFriendResponseApi>
 
+    @POST(Utils.update_time_location)
+    suspend fun updateTimeLocation(@Body requestBody: Map<String,String>): retrofit2.Response<ULocationFriendResponseApi>
 
 }
 class PossFriendResponseApi {
@@ -82,3 +84,10 @@ class LocationFriendResponseApi {
     @SerializedName("location") var location: LocationUser = LocationUser()
     @SerializedName("message") var message: String = ""
 }
+
+class ULocationFriendResponseApi {
+    @SerializedName("friend_update") var friend_update: Friend = Friend()
+    @SerializedName("message") var message: String = ""
+}
+
+
