@@ -16,5 +16,6 @@ class UserRemoteDataSource @Inject constructor(
     suspend fun saveLocation(requestBody: MutableMap<String, String>) = userService.saveLocation(requestBody)
     suspend fun updateToken(requestBody: MutableMap<String, String>) = userService.updateToken(requestBody)
     suspend fun fetchNotificationByUser(requestBody: MutableMap<String, String>) = userService.fetchNotificationByUser(requestBody)
+    suspend fun deleteNotification(requestBody: MutableMap<String, String>) = userService.deleteNotification(requestBody)
 
 }

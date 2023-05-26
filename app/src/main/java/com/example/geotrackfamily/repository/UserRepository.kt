@@ -152,4 +152,26 @@ class UserRepository  @Inject constructor(
         }
     }
 
+    suspend fun delete_notification(notification_id: String): Result<CompositionObj<Notification, String>> {
+        return withContext(Dispatchers.Default){
+            try {
+                val requestBody: MutableMap<String, String> = HashMap()
+                requestBody["notification_id"] = notification_id
+                val response = userRemoteDataSource.deleteNotification(requestBody = requestBody)
+                val body = response.body()
+                if (body != null) {
+                    val ab = CompositionObj(response.body()!!.notification, response.body()!!.message)
+                    Result.Success(ab)
+                }
+                else{
+                    errorResult( message = "",errorBody = response.errorBody()!!)
+                }
+            }catch (e: Exception){
+                errorResult(message = e.message ?: e.toString())
+            }
+        }
+    }
+
+
+
 }

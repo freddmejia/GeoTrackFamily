@@ -39,6 +39,7 @@
     <string name="disable_location">Deshabilitar ubicación</string>
     <string name="track_friend">Rastrea un amigo</string>
     <string name="geozone_friend">Geofences amigo</string>
+    <string name="notifications">Notificaciones</string>
     <!-- errors -->
     <string name="error_fill_user">LLena el nombre y el email</string>
     <string name="error_fill">LLena todos los campos</string>

@@ -53,9 +53,4 @@ class FriendAdapter (val context: Context, var list: List<Friend>, val observer:
         notifyDataSetChanged()
     }
 
-    /*fun deleteUser(id: Int) {
-        val tempList : List<Friend> = arrayListOf()
-        list.
-        notifyDataSetChanged()
-    }*/
 }

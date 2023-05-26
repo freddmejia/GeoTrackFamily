@@ -29,6 +29,9 @@ class UserViewModel  @Inject constructor(
     private val _compositionNotifications = MutableStateFlow<Result<CompositionObj<ArrayList<Notification>,String>>>(Result.Empty)
     val compositionNotifications :  StateFlow<Result<CompositionObj<ArrayList<Notification>,String>>> = _compositionNotifications
 
+    private val _compositionNotification = MutableStateFlow<Result<CompositionObj<Notification,String>>>(Result.Empty)
+    val compositionNotification :  StateFlow<Result<CompositionObj<Notification,String>>> = _compositionNotification
+
 
     private val _loadingProgress = MutableStateFlow(false)
     val loadingProgress: StateFlow<Boolean> = _loadingProgress
@@ -66,6 +69,13 @@ class UserViewModel  @Inject constructor(
         _compositionNotifications.value = Result.Empty
         _loadingProgress.value = true
         _compositionNotifications.value = userRepository.fetc_notificatio_by_user(user_id = user_id)
+        _loadingProgress.value = false
+    }
+
+    fun delete_notification(notification_id: String) = viewModelScope.launch (Dispatchers.IO) {
+        _compositionNotification.value = Result.Empty
+        _loadingProgress.value = true
+        _compositionNotification.value = userRepository.delete_notification(notification_id = notification_id)
         _loadingProgress.value = false
     }
 

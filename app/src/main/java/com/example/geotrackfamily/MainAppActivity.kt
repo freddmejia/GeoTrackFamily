@@ -118,6 +118,11 @@ class MainAppActivity : AppCompatActivity() {
                 Intent(this@MainAppActivity, ProfileActivity::class.java)
             )
         }
+        toolbarAppBinding.rvNotification.setOnClickListener {
+            startActivity(
+                Intent(this@MainAppActivity, NotificationUserActivity::class.java)
+            )
+        }
 
         bottomBarBinding.rvHome.setOnClickListener {
             chooseSelectionMenu(fragment = HomeFragment.newInstance())
