@@ -17,7 +17,7 @@
             style="@style/bold_medium"
             android:layout_marginBottom="15sp"
             />
-        <com.google.android.material.card.MaterialCardView
+        <!--<com.google.android.material.card.MaterialCardView
             android:id="@+id/cvUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
                 android:background="@android:color/transparent"
                 android:hint="@string/find_friend_by_name_email"
                 />
-        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFriends"
             android:layout_width="match_parent"

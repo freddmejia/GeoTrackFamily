@@ -55,6 +55,6 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
     }
     fun sendRegistrationToServer(token: String){
-
+        //Enviar el token al api rest
     }
 }

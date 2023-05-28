@@ -121,8 +121,6 @@ class LocationService : Service() {
     }
 
     private fun sendLocationToApi(latitude: Double, longitude: Double) {
-        // Aquí puedes usar una biblioteca como Retrofit para realizar la solicitud POST a tu API REST
-        // y enviar la ubicación al servidor
         var user = User()
 
         val prefsUser = applicationContext.getSharedPreferences(

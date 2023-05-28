@@ -2,6 +2,8 @@ package com.example.geotrackfamily.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -83,7 +85,25 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
 
 
     fun events(){
+        binding?.etUsername?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val inputText = s.toString()
+                if (inputText.trim().length >= 1){
+                    val tmp = tempFriendsList.filter { it.name.toLowerCase().contains(inputText.toLowerCase())  }
+                    if (tmp.isNotEmpty())
+                        friendsZoneAdapter.setNewData(tmp)
+                }
+                if (inputText.trim().length <= 0)
+                    friendsZoneAdapter.setNewData(friendsList)
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
     }
 
     fun coroutines() {
