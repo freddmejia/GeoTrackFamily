@@ -50,11 +50,11 @@ class FindFriendActivity : AppCompatActivity(), UIObserverGeneric<Friend> {
         friendViewModel.fetch_possible_friends()
 
         friendAdapter = FriendAdapter(this@FindFriendActivity, list = arrayListOf(), this )
-        binding!!.rvFriends.layoutManager = GridLayoutManager(this@FindFriendActivity, 2, GridLayoutManager.VERTICAL, false)
-        binding!!.rvFriends.adapter = friendAdapter
+        binding.rvFriends.layoutManager = GridLayoutManager(this@FindFriendActivity, 2, GridLayoutManager.VERTICAL, false)
+        binding.rvFriends.adapter = friendAdapter
         toast = Toast(this)
 
-        val prefsUser = this@FindFriendActivity?.getSharedPreferences(
+        val prefsUser = this@FindFriendActivity.getSharedPreferences(
             resources.getString(R.string.shared_preferences),
             Context.MODE_PRIVATE
         )
