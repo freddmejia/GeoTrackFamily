@@ -13,9 +13,13 @@ import java.time.format.DateTimeFormatter
 
 class Utils {
     companion object{
+
+        const val domainIp = "18.234.175.136"
+
+        const val domainApi = "http://$domainIp/"
+        const val urlSocket = "http://$domainIp:8001"
+
         const val api_version = "/api"
-        const val domainApi = "http://192.168.1.16:8000/"
-        const val urlSocket = "http://192.168.1.16:8001"
 
         //user
         const val login = "$api_version/login"
