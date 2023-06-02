@@ -64,7 +64,12 @@ class HomeFragment : Fragment(R.layout.home_fragment), UIObserverGeneric<Friend>
             resources.getString(R.string.shared_preferences),
             Context.MODE_PRIVATE
         )
-        user = User(JSONObject(prefsUser!!.getString("user","")))
+        try {
+            user = User(JSONObject(prefsUser!!.getString("user","")))
+        }
+        catch (e: java.lang.Exception){
+
+        }
         friendAdded = Friend()
         friendsAdapter = FriendsAdapter(this@HomeFragment.requireContext(), list = arrayListOf(), this)
         binding?.rvMyFriends?.layoutManager = LinearLayoutManager(this@HomeFragment.requireContext())

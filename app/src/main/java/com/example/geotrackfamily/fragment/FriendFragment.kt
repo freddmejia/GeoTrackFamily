@@ -1,11 +1,20 @@
 package com.example.geotrackfamily.fragment
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -36,6 +45,7 @@ import okhttp3.WebSocket
 import okhttp3.*
 import okio.ByteString
 import org.json.JSONObject
+import androidx.core.graphics.drawable.DrawableCompat
 
 @AndroidEntryPoint
 class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Friend>,
@@ -143,7 +153,7 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
                     is com.example.geotrackfamily.utility.Result.Success<CompositionObj<LocationUser,String>> -> {
                         val latitude = result.data.data.latitude.toDouble()
                         val longitude = result.data.data.longitude.toDouble()
-                        showUbicationFriend(latitude = latitude, longitude = longitude)
+                        showUbicationFriend(latitude = latitude, longitude = longitude, friend = friendCh)
                     }
                     is com.example.geotrackfamily.utility.Result.Error-> {
                         showToast(message = result.error)
@@ -217,7 +227,7 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
                     if (friendCh.id > 0 && friendCh.id == locationJson.getInt("user_id")) {
                         val latitude = locationJson.getString("latitude").toDouble()
                         val longitude = locationJson.getString("longitude").toDouble()
-                        showUbicationFriend(latitude = latitude, longitude = longitude)
+                        showUbicationFriend(latitude = latitude, longitude = longitude, friend = friendCh)
                     }
 
                 }catch (e: java.lang.Exception){
@@ -259,19 +269,181 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
         toast.show()
     }
 
-    fun showUbicationFriend (latitude: Double, longitude: Double) {
+    private fun drawableToBitmap(drawable: Drawable): Bitmap {
+        val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
+    }
+
+    fun showUbicationFriend (latitude: Double, longitude: Double, friend: Friend) {
         activity?.runOnUiThread {
             googleMap?.clear()
             val latLng = LatLng(latitude, longitude)
+            
+            // Crear la vista personalizada del marcador
+            val markerView = LayoutInflater.from(this@FriendFragment.requireContext()).inflate(R.layout.location_friend_item, null)
+            val markerTextView = markerView.findViewById<TextView>(R.id.markerTextView)
+
+            // Configurar el texto adicional
+            markerTextView.text = friend.name
+
+            // Medir y ajustar el tamaño de la vista del marcador
+            markerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+            markerView.layout(0, 0, markerView.measuredWidth, markerView.measuredHeight)
+
+            // Crear el bitmap del marcador personalizado
+            val bitmap = Bitmap.createBitmap(markerView.measuredWidth, markerView.measuredHeight, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            markerView.draw(canvas)
+
+            val markerOptions = MarkerOptions()
+                .position(latLng) // LatLng de la ubicación
+                .icon(BitmapDescriptorFactory.fromBitmap(bitmap)) // Ícono personalizado
+                .title(friend.name)
+                .anchor(0.5f, 0.5f) // Ajustar el anclaje del icono al centro del marcador
+                .infoWindowAnchor(0.5f, 0.5f) // Ajustar el anclaje de la ventana de información al centro del marcador
+
+            googleMap?.addMarker(markerOptions)
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+            googleMap?.uiSettings?.isZoomGesturesEnabled = true
+        }
+
+
+        /*activity?.runOnUiThread {
+            googleMap?.clear()
+            val latLng = LatLng(latitude, longitude)
+
+            // Calcular el tamaño del icono en función del nivel de zoom actual
+            val zoomLevel = googleMap.cameraPosition.zoom
+            val iconSize = zoomLevel * 3 // Ajusta el valor según tus necesidades
+
+            // Crear la vista personalizada del marcador
+            val markerView = LayoutInflater.from(this@FriendFragment.requireContext()).inflate(R.layout.location_friend_item, null)
+            val markerTextView = markerView.findViewById<TextView>(R.id.markerTextView)
+
+            // Configurar el texto adicional
+            markerTextView.text = friend.name
+
+            // Medir y ajustar el tamaño de la vista del marcador
+            markerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+            markerView.layout(0, 0, markerView.measuredWidth, markerView.measuredHeight)
+
+            // Crear el bitmap del marcador personalizado
+            val bitmap = Bitmap.createBitmap(markerView.measuredWidth, markerView.measuredHeight, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            markerView.draw(canvas)
+
+            // Convertir el bitmap en un objeto Drawable
+            val customDrawable = BitmapDrawable(resources, bitmap)
+
+            // Obtener el ícono adicional
+            val additionalDrawable = resources.getDrawable(R.drawable.ubication_icon)
+
+            // Tintar el ícono adicional con el color deseado (opcional)
+            val tintedAdditionalDrawable = additionalDrawable.mutate()
+            DrawableCompat.setTint(tintedAdditionalDrawable, Color.RED)
+
+            // Crear un ícono compuesto con el ícono personalizado y el ícono adicional
+            val layerDrawable = LayerDrawable(arrayOf(additionalDrawable, customDrawable))
+
+            val markerOptions = MarkerOptions()
+                .position(latLng) // LatLng de la ubicación
+                .icon(BitmapDescriptorFactory.fromBitmap(drawableToBitmap(layerDrawable))) // Ícono compuesto personalizado
+                .title(friend.name)
+                .anchor(0.5f, 0.5f) // Ajustar el anclaje del icono al centro del marcador
+                .infoWindowAnchor(0.5f, 0.5f) // Ajustar el anclaje de la ventana de información al centro del marcador
+
+            googleMap?.addMarker(markerOptions)
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+            googleMap?.uiSettings?.isZoomGesturesEnabled = true
+        }*/
+
+        /*activity?.runOnUiThread {
+            googleMap?.clear()
+            val latLng = LatLng(latitude, longitude)
+
+            // Calcular el tamaño del icono en función del nivel de zoom actual
+            val zoomLevel = googleMap.cameraPosition.zoom
+            val iconSize = zoomLevel * 3 // Ajusta el valor según tus necesidades
+
+            // Crear la vista personalizada del marcador
+            val markerView = LayoutInflater.from(this@FriendFragment.requireContext()).inflate(R.layout.location_friend_item, null)
+            val markerTextView = markerView.findViewById<TextView>(R.id.markerTextView)
+
+            // Configurar el texto adicional
+            markerTextView.text = friend.name
+
+            // Medir y ajustar el tamaño de la vista del marcador
+            markerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+            markerView.layout(0, 0, markerView.measuredWidth, markerView.measuredHeight)
+
+            // Crear el bitmap del marcador personalizado
+            val bitmap = Bitmap.createBitmap(markerView.measuredWidth, markerView.measuredHeight, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            markerView.draw(canvas)
+
+            val markerOptions = MarkerOptions()
+                .position(latLng) // LatLng de la ubicación
+                .icon(BitmapDescriptorFactory.fromBitmap(bitmap)) // Ícono personalizado
+                .title(friend.name)
+                .anchor(0.5f, 0.5f) // Ajustar el anclaje del icono al centro del marcador
+                .infoWindowAnchor(0.5f, 0.5f) // Ajustar el anclaje de la ventana de información al centro del marcador
+
+            googleMap?.addMarker(markerOptions)
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+            googleMap?.uiSettings?.isZoomGesturesEnabled = true
+        } */
+
+        /*activity?.runOnUiThread {
+
+            googleMap?.clear()
+            val latLng = LatLng(latitude, longitude)
+
+            // Calcular el tamaño del icono en función del nivel de zoom actual
+            val zoomLevel = googleMap.cameraPosition.zoom
+            val iconSize = zoomLevel * 3 // Ajusta el valor según tus necesidades
+
+
             val markerOptions = MarkerOptions()
                 .position(latLng) // LatLng de la ubicación
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ubication_icon)) // Ícono personalizado
-                .title("Ubication")
+                .title(friend.name)
+                .anchor(0.5f, 0.5f) // Ajustar el anclaje del icono al centro del marcador
+                .infoWindowAnchor(0.5f, 0.5f) // Ajustar el anclaje de la ventana de información al centro del marcador
+
+
+            // Crear la vista personalizada del marcador
+            val markerView = LayoutInflater.from(this@FriendFragment.requireContext()).inflate(R.layout.location_friend_item, null)
+            val markerTextView = markerView.findViewById<TextView>(R.id.markerTextView)
+
+            // Configurar el texto adicional
+            markerTextView.text = "Texto adicional"
+
+            // Crear el bitmap del marcador personalizado
+            val originalIcon = BitmapFactory.decodeResource(resources, R.drawable.ubication_icon)
+            val scaledIcon = Bitmap.createScaledBitmap(originalIcon, iconSize.toInt(), iconSize.toInt(), false)
+
+            // Combinar el icono y el texto en un bitmap único
+            val combinedBitmap = Bitmap.createBitmap(
+                scaledIcon.width, scaledIcon.height + markerTextView.height, Bitmap.Config.ARGB_8888
+            )
+            val canvas = Canvas(combinedBitmap)
+            canvas.drawBitmap(scaledIcon, 0f, 0f, null)
+            markerView.layout(0, scaledIcon.height, scaledIcon.width, scaledIcon.height + markerTextView.height)
+            markerView.draw(canvas)
+
+            // Establecer el bitmap personalizado como el ícono del marcador
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(combinedBitmap))
+
+
 
             googleMap?.addMarker(markerOptions) // Agreg
             googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
             googleMap?.uiSettings?.isZoomGesturesEnabled = true
 
-        }
+        }*/
     }
+
 }

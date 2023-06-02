@@ -167,10 +167,11 @@ class ProfileActivity : AppCompatActivity() {
         editor.remove("isLocationRunning")
         editor.remove("isControlByUser")
         editor.apply()
+        finish()
         startActivity(
             Intent(this@ProfileActivity, MainActivity::class.java)
         )
-        finish()
+
     }
 
     fun isLocationRunning(isLocationRunning: Boolean) {
