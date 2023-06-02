@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.text.Editable
@@ -185,6 +187,42 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
         toast.show()
     }
 
+    fun checkPermissionMap()
+    {
+        val permission = Manifest.permission.ACCESS_FINE_LOCATION
+        val requestCode = 1 // Puedes utilizar cualquier código de solicitud que desees
+
+        if (ActivityCompat.checkSelfPermission(this@ZoneFragment.requireContext(), permission) != PackageManager.PERMISSION_GRANTED) {
+            // Los permisos no están concedidos, solicítalos
+            ActivityCompat.requestPermissions(this@ZoneFragment.requireActivity(), arrayOf(permission), requestCode)
+            Log.e(TAG, "checkPermissionMap: ask", )
+        } else {
+            // Los permisos ya están concedidos, obtén la ubicación
+            Log.e(TAG, "getCurrentLocation:", )
+            getCurrentLocation()
+        }
+    }
+
+
+    private fun getCurrentLocation() {
+        val locationManager = this@ZoneFragment.requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val provider = LocationManager.GPS_PROVIDER // Opcionalmente, puedes usar NETWORK_PROVIDER
+
+        if (ActivityCompat.checkSelfPermission(this@ZoneFragment.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            val lastKnownLocation = locationManager.getLastKnownLocation(provider)
+            if (lastKnownLocation != null) {
+                val latitude = lastKnownLocation.latitude
+                val longitude = lastKnownLocation.longitude
+                currentLocation = LatLng(lastKnownLocation!!.latitude, lastKnownLocation!!.longitude)
+
+                return
+            }
+        }
+
+        showToast(message = resources.getString(R.string.error_not_enable_gps))
+    }
+
+    /*
     fun checkPermissionMap() {
         if (ActivityCompat.checkSelfPermission(this@ZoneFragment.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             //ask permission
@@ -213,7 +251,7 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
 
 
 
-    }
+    }*/
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
@@ -309,11 +347,15 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
         googleMap?.uiSettings?.isTiltGesturesEnabled = false
 
 
-        if (currentLocation != null){
-            val initialLocation = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
-            val cameraPosition = CameraPosition.Builder().target(initialLocation).zoom(10f).build()
-            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
+
+       // if (currentLocation != null){
+
+        val initialLocation =
+            LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
+        val cameraPosition =
+            CameraPosition.Builder().target(initialLocation).zoom(10f).build()
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
             googleMap.setOnMapClickListener { point ->
                 Log.e(TAG, "onMapReady setOnMapClickListener: ", )
                 draftCircleOnMap(
@@ -322,7 +364,7 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
                 )
             }
             return
-        }
+        //}
 
         //Log.e(TAG, "onMapReady: 22", )
         //checkPermissionMap()

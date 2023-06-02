@@ -19,7 +19,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         // Mostrar la notificación
         if (notificationTitle != null && notificationMessage != null) {
-            Log.e("", "onMessageReceived: inside", )
+            Log.e("", "onMessageReceived: inside"+remoteMessage.toString())
             showNotification(notificationTitle, notificationMessage)
         }
     }

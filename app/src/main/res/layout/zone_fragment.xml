@@ -4,110 +4,113 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-        <LinearLayout
-            android:id="@+id/linear"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    <!-- <androidx.core.widget.NestedScrollView
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:fillViewport="true">-->
+         <LinearLayout
+             android:id="@+id/linear"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical">
 
 
-            <RelativeLayout
-                android:id="@+id/rlMyFriends"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginHorizontal="15sp">
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cvFindFriends"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="10sp"
-                        android:layout_marginBottom="20sp"
-                        app:strokeWidth="1sp"
-                        app:strokeColor="@color/gray_7c"
-                        android:layout_marginHorizontal="25sp"
-                        android:layout_marginTop="15sp"
-                        >
+             <RelativeLayout
+                 android:id="@+id/rlMyFriends"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:visibility="visible">
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                     android:layout_marginHorizontal="15sp">
+                     <com.google.android.material.card.MaterialCardView
+                         android:id="@+id/cvFindFriends"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         app:cardCornerRadius="10sp"
+                         android:layout_marginBottom="20sp"
+                         app:strokeWidth="1sp"
+                         app:strokeColor="@color/gray_7c"
+                         android:layout_marginHorizontal="25sp"
+                         android:layout_marginTop="15sp"
+                         >
 
-                        <EditText
-                            android:id="@+id/etUsername"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginHorizontal="5sp"
-                            android:background="@android:color/transparent"
-                            android:hint="@string/find_friend_by_name"
-                            android:imeOptions="actionDone"
-                            android:inputType="text"
-                            android:padding="10sp"
-                            tools:ignore="TouchTargetSizeCheck" />
-                    </com.google.android.material.card.MaterialCardView>
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvMyFriends"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                         <EditText
+                             android:id="@+id/etUsername"
+                             android:layout_width="match_parent"
+                             android:layout_height="match_parent"
+                             android:layout_marginHorizontal="5sp"
+                             android:background="@android:color/transparent"
+                             android:hint="@string/find_friend_by_name"
+                             android:imeOptions="actionDone"
+                             android:inputType="text"
+                             android:padding="10sp"
+                             tools:ignore="TouchTargetSizeCheck" />
+                     </com.google.android.material.card.MaterialCardView>
+                     <androidx.recyclerview.widget.RecyclerView
+                         android:id="@+id/rvMyFriends"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"/>
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="horizontal">
 
-                    </LinearLayout>
-                </LinearLayout>
-            </RelativeLayout>
+                     </LinearLayout>
+                 </LinearLayout>
+             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rvPlaceHolder"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:visibility="gone">
+             <RelativeLayout
+                 android:id="@+id/rvPlaceHolder"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:gravity="center"
+                 android:visibility="gone">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginHorizontal="15sp">
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                     android:layout_marginHorizontal="15sp">
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/zone_placeholder"
-                        android:layout_marginTop="25sp"
-                        android:layout_marginBottom="35sp"
-                        android:visibility="visible"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/zone_dangerous_location"
-                        style="@style/normal_medium"
-                        android:layout_gravity="center"
-                        android:layout_marginHorizontal="20sp"
-                        />
+                     <ImageView
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:src="@drawable/zone_placeholder"
+                         android:layout_marginTop="25sp"
+                         android:layout_marginBottom="35sp"
+                         android:visibility="visible"
+                         />
+                     <TextView
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:text="@string/zone_dangerous_location"
+                         style="@style/normal_medium"
+                         android:layout_gravity="center"
+                         android:layout_marginHorizontal="20sp"
+                         />
 
-                </LinearLayout>
-            </RelativeLayout>
+                 </LinearLayout>
+             </RelativeLayout>
 
 
-            <fragment
-                android:id="@+id/places_search_fragment"
-                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+             <fragment
+                 android:id="@+id/places_search_fragment"
+                 android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content" />
+
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mapView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_margin="10sp"/>
 
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    <!--</androidx.core.widget.NestedScrollView>-->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
