@@ -55,10 +55,13 @@ class FriendRepository @Inject constructor(
         }
     }
 
-    suspend fun fetch_friends(): Result<CompositionObj<ArrayList<Friend>, String>> {
+    suspend fun fetch_friends(user_id: String): Result<CompositionObj<ArrayList<Friend>, String>> {
         return withContext(Dispatchers.Default){
             try {
-                val response = friendRemoteDataSource.fetchFriends()
+                val requestBody: MutableMap<String, String> = HashMap()
+                requestBody["user_id"] = user_id
+                val response = friendRemoteDataSource.fetchFriends(requestBody = requestBody)
+
                 val body = response.body()
                 Log.e("", "fetch_friends: " +body.toString() )
                 if (body != null) {

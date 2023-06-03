@@ -178,7 +178,7 @@ class ZoneFragment : Fragment(R.layout.zone_fragment), UIObserverGeneric<Friend>
     }
 
     fun api() {
-        friendViewModel.fetch_friends()
+        friendViewModel.fetch_friends(user_id = user.id.toString())
     }
 
     fun showToast(message: String){

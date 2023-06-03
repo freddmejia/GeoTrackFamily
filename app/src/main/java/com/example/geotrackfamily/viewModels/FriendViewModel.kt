@@ -75,10 +75,11 @@ class FriendViewModel @Inject constructor(
             }
     }
 
-    fun fetch_friends() = viewModelScope.launch {
+    fun fetch_friends(user_id: String) = viewModelScope.launch {
         _compositionFriendRequest.value = Result.Empty
         _loadingProgress.value = true
-        _compositionFetchPossibleFriends.value = friendRepository.fetch_friends()
+        _compositionFetchPossibleFriends.value = friendRepository.fetch_friends(user_id = user_id)
+        Log.e("", "_compositionFetchPossibleFriends: "+_compositionFetchPossibleFriends.value.toString() )
         _loadingProgress.value = false
     }
 
@@ -93,6 +94,7 @@ class FriendViewModel @Inject constructor(
         _compositionFetchFriendsRequest.value = Result.Empty
         _loadingProgress.value = true
         _compositionFetchFriendsRequest.value = friendRepository.fetch_friends_request()
+        Log.e("", "_compositionFetchFriendsRequest: "+_compositionFetchFriendsRequest.value.toString() )
         _loadingProgress.value = false
     }
 

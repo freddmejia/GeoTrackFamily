@@ -17,7 +17,7 @@ interface FriendServiceRemote {
     suspend fun fetchPossibleFriends(@Body requestBody: Map<String,String>): retrofit2.Response<PossFriendResponseApi>
 
     @POST(Utils.fetch_friends)
-    suspend fun fetchFriends(): retrofit2.Response<FriendsResponseApi>
+    suspend fun fetchFriends(@Body requestBody: Map<String,String>): retrofit2.Response<FriendsResponseApi>
 
     @POST(Utils.fetch_friends_request)
     suspend fun fetchFriendsRequest(): retrofit2.Response<RequestFriendResponsArApi>

@@ -1,5 +1,6 @@
 package com.example.geotrackfamily.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -60,6 +61,7 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
     private lateinit var client: OkHttpClient
     private lateinit var friendCh: Friend
     private lateinit var toast: Toast
+    private lateinit var user: User
     companion object{
         fun newInstance(): FriendFragment {
             return FriendFragment()
@@ -69,6 +71,17 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
         super.onViewCreated(view, savedInstanceState)
         val friendFragmenBinding = FriendFragmentBinding.bind(view)
         binding = friendFragmenBinding!!
+
+        try {
+            val prefsUser = this@FriendFragment.requireContext()?.getSharedPreferences(
+                resources.getString(R.string.shared_preferences),
+                Context.MODE_PRIVATE
+            )
+            user = User(JSONObject(prefsUser!!.getString("user","")))
+        }
+        catch (e: java.lang.Exception){
+
+        }
 
         toast = Toast(this@FriendFragment.requireContext())
         friendsList = arrayListOf()
@@ -90,7 +103,7 @@ class FriendFragment : Fragment(R.layout.friend_fragment) , UIObserverGeneric<Fr
 
     }
     fun api() {
-        friendViewModel.fetch_friends()
+        friendViewModel.fetch_friends(user_id = user.id.toString())
     }
 
 
