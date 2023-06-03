@@ -17,5 +17,7 @@ class UserRemoteDataSource @Inject constructor(
     suspend fun updateToken(requestBody: MutableMap<String, String>) = userService.updateToken(requestBody)
     suspend fun fetchNotificationByUser(requestBody: MutableMap<String, String>) = userService.fetchNotificationByUser(requestBody)
     suspend fun deleteNotification(requestBody: MutableMap<String, String>) = userService.deleteNotification(requestBody)
+    suspend fun panicAlert(requestBody: MutableMap<String, String>) = userService.panicAlert(requestBody)
+
 
 }

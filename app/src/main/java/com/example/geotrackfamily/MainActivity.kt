@@ -18,12 +18,14 @@ class MainActivity : AppCompatActivity() {
 
     fun events(){
         binding.cvLogin.setOnClickListener {
+            finish()
             startActivity(
                 Intent(this@MainActivity, LoginActivity::class.java)
             )
         }
 
         binding.cvRegister.setOnClickListener {
+            finish()
             startActivity(
                 Intent(this@MainActivity, RegisterActivity::class.java)
             )

@@ -37,31 +37,25 @@ class LocationService : Service() {
     private lateinit var locationManager: LocationManager
     @Inject
     lateinit var userRepository: UserRepository
-
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
-
     override fun onCreate() {
         super.onCreate()
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Configurar la notificación del servicio en primer plano
         val channelId = "LocationServiceChannel"
-
         val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle("Mi aplicación está obteniendo ubicación del usuario")
             .setContentText("Toca para obtener más información")
             .build()
-
         /*val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle("Location Service")
             .setContentText("Obteniendo ubicación del usuario...")
             //.setSmallIcon(R.drawable.ic_notification)
             .build()*/
-
         // Crear un canal de notificación para Android Oreo y versiones posteriores
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -72,20 +66,15 @@ class LocationService : Service() {
             val notificationManager = getSystemService(NotificationManager::class.java)
             notificationManager.createNotificationChannel(channel)
         }
-
         // Iniciar el servicio en primer plano
         startForeground(123, notification)
-
         startLocationUpdates()
-
         return START_STICKY
     }
-
     override fun onDestroy() {
         super.onDestroy()
         stopLocationUpdates()
     }
-
     private fun startLocationUpdates() {
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -100,11 +89,9 @@ class LocationService : Service() {
             )
         }
     }
-
     private fun stopLocationUpdates() {
         locationManager.removeUpdates(locationListener)
     }
-
     private val locationListener: LocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
             // Aquí puedes enviar la ubicación a través de la API REST
@@ -115,7 +102,6 @@ class LocationService : Service() {
                e.printStackTrace()
            }
         }
-
         override fun onProviderDisabled(provider: String) {
             // Manejar si el proveedor de ubicación está deshabilitado
         }

@@ -63,6 +63,7 @@ class NotificationUserActivity : AppCompatActivity(), UIObserverGeneric<Notifica
 
     fun api() {
         userViewModel.fetc_notificatio_by_user(user_id = user.id.toString())
+
     }
 
     fun coroutines(){

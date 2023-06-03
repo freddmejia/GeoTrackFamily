@@ -35,6 +35,7 @@ class Utils {
         const val update_token = "$api_version/update_token"
         const val fetch_notifi_by_user = "$api_version/fetch_notifi_by_user"
         const val delete_notification = "$api_version/delete_notification"
+        const val panic_alert = "$api_version/panic_alert"
 
         //friends
         const val fetch_possible_friends = "$api_version/fetch_possible_friends"
@@ -56,6 +57,7 @@ class Utils {
         const val are_friend = 2
         const val friend_cancel = 3
 
+        const val no_data = "No hay datos"
         fun <T> errorResult(message: String,errorBody: ResponseBody? = null): Result<T> {
             //Timber.d(message)
             var mess_d = message

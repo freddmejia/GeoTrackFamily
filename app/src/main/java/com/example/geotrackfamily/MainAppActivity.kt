@@ -2,9 +2,9 @@ package com.example.geotrackfamily
 
 import android.Manifest
 import android.app.ActivityManager
-import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.PorterDuff
@@ -13,14 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import com.example.geotrackfamily.databinding.ActivityMainAppBinding
 import com.example.geotrackfamily.databinding.BottomBarBinding
@@ -34,11 +31,11 @@ import com.example.geotrackfamily.utility.Utils
 import com.example.geotrackfamily.viewModels.UserViewModel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.FirebaseMessagingService
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONObject
 import android.provider.Settings
-import androidx.activity.result.contract.ActivityResultContracts
+import android.view.KeyEvent
+import android.view.ViewConfiguration
 import androidx.core.app.NotificationManagerCompat
 
 @AndroidEntryPoint
@@ -52,6 +49,9 @@ class MainAppActivity : AppCompatActivity() {
     private lateinit var sharedPref: SharedPreferences
     private val NOTIFICATION_PERMISSION_REQUEST_CODE = 1001
     private lateinit var toast: Toast
+    private var volumeDownPressTime: Long = 0
+    private val requiredPressCount = 3
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainAppBinding.inflate(layoutInflater)
@@ -75,6 +75,7 @@ class MainAppActivity : AppCompatActivity() {
         }catch (e: java.lang.Exception){
             e.printStackTrace()
         }
+
 
         askPermissions()
         events()
@@ -319,4 +320,46 @@ class MainAppActivity : AppCompatActivity() {
         toast = Toast.makeText(this@MainAppActivity,message, Toast.LENGTH_LONG)
         toast.show()
     }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - volumeDownPressTime <= ViewConfiguration.getDoubleTapTimeout() * requiredPressCount) {
+                // Se han presionado tres veces seguidas el botón de volumen hacia abajo
+                sendPanicAlert()
+            }
+            volumeDownPressTime = currentTime
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+    fun sendPanicAlert() {
+        Log.e(TAG, "sendPanicAlert: ", )
+        userViewModel.panicAlert(user_id = user.id.toString())
+    }
+    /*  override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
+        try {
+
+
+            if (event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                val currentTime = System.currentTimeMillis()
+                if (currentTime - volumeDownPressTime <= ViewConfiguration.getDoubleTapTimeout() * requiredPressCount) {
+
+                    //if (currentTime - volumeDownPressTime <= ViewConfiguration.getDoubleTapTimeout()) {
+                    // Se han presionado dos veces seguidas el botón de volumen hacia abajo
+                    // Realizar la acción de pánico aquí
+                    sendPanicAlert()
+                }
+                volumeDownPressTime = currentTime
+            }
+        }
+        catch (e: java.lang.Exception){
+
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
+    fun sendPanicAlert() {
+        Log.e(TAG, "sendPanicAlert: ", )
+        userViewModel.panicAlert(user_id = user.id.toString())
+    }*/
 }

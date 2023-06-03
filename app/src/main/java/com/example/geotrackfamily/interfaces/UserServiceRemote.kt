@@ -41,6 +41,9 @@ interface UserServiceRemote {
     @POST(Utils.delete_notification)
     suspend fun deleteNotification (@Body requestBody: Map<String,String>): retrofit2.Response<NotificationDResponseApi>
 
+    @POST(Utils.panic_alert)
+    suspend fun panicAlert (@Body requestBody: Map<String,String>): retrofit2.Response<PanicAlertResponseApi>
+
 }
 class UserResponseApi {
     @SerializedName("user") var user: User = User()
@@ -68,5 +71,10 @@ class NotificationResponseApi {
 
 class NotificationDResponseApi {
     @SerializedName("notification") var notification: Notification = Notification()
+    @SerializedName("message") var message: String = ""
+}
+
+class PanicAlertResponseApi {
+    @SerializedName("panic_alert") var panic_alert: String = ""
     @SerializedName("message") var message: String = ""
 }

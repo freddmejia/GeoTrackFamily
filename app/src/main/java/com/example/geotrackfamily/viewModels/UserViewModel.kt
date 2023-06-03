@@ -78,6 +78,8 @@ class UserViewModel  @Inject constructor(
         _compositionNotification.value = userRepository.delete_notification(notification_id = notification_id)
         _loadingProgress.value = false
     }
-
+    fun panicAlert(user_id: String) = viewModelScope.launch (Dispatchers.IO) {
+        userRepository.panicAlert(user_id = user_id)
+    }
 
 }

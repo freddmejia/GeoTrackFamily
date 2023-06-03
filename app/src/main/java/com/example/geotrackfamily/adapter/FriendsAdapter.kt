@@ -21,6 +21,7 @@ class FriendsAdapter (val context: Context, var list: List<Friend>, val observer
         val TAG = "FriendsAdapter"
         fun binData(shortUser: Friend, observer: UIObserverGeneric<Friend>){
             Log.e(TAG, "binData: "+shortUser.name + " "+shortUser.email )
+            binding.editUser.isVisible = false
             binding.nameUser.text = shortUser.name
             binding.editUser.setOnClickListener{
                 observer.onOkButton(data = shortUser)
